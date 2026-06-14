@@ -7,6 +7,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.helpers.entity import Entity
 from homeassistant.components.frontend import add_extra_js_url
+from homeassistant.components.http import StaticPathConfig
 
 from .const import DOMAIN
 
@@ -17,7 +18,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     
     # Register the static path for frontend resources
     frontend_dir = os.path.join(os.path.dirname(__file__), "frontend")
-    hass.http.register_static_path("/fallout_terminal_ui", frontend_dir, cache_headers=False)
+    await hass.http.async_register_static_paths([
+        StaticPathConfig("/fallout_terminal_ui", frontend_dir, cache_headers=False)
+    ])
 
     # Automatically register Lovelace cards and dependencies
     add_extra_js_url(hass, "/fallout_terminal_ui/assets/vault-boy-engine.js")
