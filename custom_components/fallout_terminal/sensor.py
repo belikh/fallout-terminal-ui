@@ -39,7 +39,14 @@ class VaultDiagnosticSensor(SensorEntity):
 
     def update(self) -> None:
         """Fetch updated operational data parameters."""
-        animations = ["idle", "walking", "thumbs_up", "alert"]
+        animations = [
+            "idle", "walking", "thumbs_up", "alert", "radiation", "combat",
+            "crafting", "running", "sleeping", "dead", "strength", "perception",
+            "endurance", "charisma", "intelligence", "agility", "luck", "hacking",
+            "lockpicking", "healing", "trading", "scavenging", "repairing",
+            "drinking", "eating", "chems", "heavy_weapons", "energy_weapons",
+            "explosives", "stealth", "speech", "science", "swimming", "flying"
+        ]
         if self._attr_native_unit_of_measurement == "%":
             self._attr_native_value = round(random.uniform(85.0, 100.0), 1)
         elif self._attr_native_unit_of_measurement == "rads":
