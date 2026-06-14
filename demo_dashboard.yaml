@@ -1,0 +1,81 @@
+title: "ROBCO INDUSTRIES - MASTER DEMO"
+views:
+  - title: "SYSTEM SHOWCASE"
+    path: "showcase"
+    type: "sections"
+    theme: "fallout_retro_theme"
+    sections:
+      - title: "COMMAND CENTER"
+        cards:
+          - type: "custom:fallout-vaultboy-status-card"
+            title: "OVERSEER STATUS"
+            animation: "thumbs_up"
+            color: "#9cff57"
+          - type: "custom:fallout-boot-card"
+          - type: "grid"
+            columns: 2
+            cards:
+              - type: "custom:fallout-mainframe-card"
+                entity: "sensor.vault_mainframe_core_status"
+              - type: "custom:fallout-rad-card"
+                entity: "sensor.radiation_levels"
+
+      - title: "S.P.E.C.I.A.L. MATRIX"
+        cards:
+          - type: "custom:fallout-special-card"
+          - type: "grid"
+            columns: 4
+            cards:
+              - type: "custom:fallout-vault-boy"
+                animation: "strength"
+              - type: "custom:fallout-vault-boy"
+                animation: "perception"
+              - type: "custom:fallout-vault-boy"
+                animation: "endurance"
+              - type: "custom:fallout-vault-boy"
+                animation: "charisma"
+              - type: "custom:fallout-vault-boy"
+                animation: "intelligence"
+              - type: "custom:fallout-vault-boy"
+                animation: "agility"
+              - type: "custom:fallout-vault-boy"
+                animation: "luck"
+              - type: "custom:fallout-vault-boy"
+                animation: "hacking"
+
+      - title: "VITAL DIAGNOSTICS"
+        cards:
+          - type: "grid"
+            columns: 3
+            cards:
+              - type: "custom:fallout-stat-panel"
+                entity: "sensor.purified_water_supply"
+              - type: "custom:fallout-stat-panel"
+                entity: "sensor.fusion_core_charge"
+              - type: "custom:fallout-stat-panel"
+                entity: "sensor.vault_population"
+          - type: "custom:fallout-hull-card"
+            entity: "sensor.structural_breach_probability"
+
+      - title: "SYSTEM MODULES GALLERY"
+        cards:
+          - type: "grid"
+            columns: 2
+            cards:
+              - type: "custom:fallout-vats-card"
+              - type: "custom:fallout-map-card"
+              - type: "custom:fallout-quest-card"
+              - type: "custom:fallout-inventory-card"
+              - type: "custom:fallout-workshop-card"
+              - type: "custom:fallout-radio-card"
+              - type: "custom:fallout-cap-card"
+              - type: "custom:fallout-camera-card"
+
+      - title: "CRITICAL ALERTS"
+        cards:
+          - type: "custom:fallout-vaultboy-status-card"
+            animation: "alert"
+            color: "#ff6b5e"
+          - type: "custom:fallout-estop-card"
+          - type: "custom:fallout-lock-card"
+            entity: "lock.vault_main_door"
