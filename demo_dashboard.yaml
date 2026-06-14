@@ -1,72 +1,94 @@
 title: "ROBCO INDUSTRIES - MASTER DEMO v2.0"
 views:
-  - title: "SHOWCASE: GREEN (DEFAULT)"
-    path: "showcase-green"
+  - title: "ALL 50+ CARDS (GREEN)"
+    path: "showcase-all"
     type: "sections"
     theme: "fallout_retro_green"
     sections:
-      - title: "COMMAND CENTER"
+      - title: "DIAGNOSTICS (1-10)"
         cards:
-          - type: "custom:fallout-vaultboy-status-card"
-            title: "OVERSEER STATUS"
-            animation: "thumbs_up"
-            color: "#9cff57"
-          - type: "custom:fallout-boot-card"
           - type: "grid"
             columns: 2
             cards:
               - type: "custom:fallout-mainframe-card"
-                entity: "sensor.vault_mainframe_core_status"
+              - type: "custom:fallout-power-card"
+              - type: "custom:fallout-water-card"
+              - type: "custom:fallout-food-card"
+              - type: "custom:fallout-defense-card"
               - type: "custom:fallout-rad-card"
-                entity: "sensor.radiation_levels"
+              - type: "custom:fallout-temp-card"
+              - type: "custom:fallout-humid-card"
+              - type: "custom:fallout-o2-card"
+              - type: "custom:fallout-hull-card"
 
-      - title: "INTERACTIVE CONTROLS"
+      - title: "CONTROLS (11-20)"
         cards:
           - type: "grid"
             columns: 2
             cards:
               - type: "custom:fallout-switch-card"
-                entity: "switch.power_relay"
+              - type: "custom:fallout-button-card"
+              - type: "custom:fallout-slider-card"
               - type: "custom:fallout-lock-card"
-                entity: "lock.vault_main_door"
+              - type: "custom:fallout-mode-card"
               - type: "custom:fallout-sequence-card"
-                entity: "script.init_purge"
+              - type: "custom:fallout-reset-card"
               - type: "custom:fallout-estop-card"
+              - type: "custom:fallout-override-card"
+              - type: "custom:fallout-calibrate-card"
 
-      - title: "S.P.E.C.I.A.L. MATRIX"
-        cards:
-          - type: "custom:fallout-special-card"
-          - type: "grid"
-            columns: 4
-            cards:
-              - type: "custom:fallout-vault-boy"
-                animation: "strength"
-              - type: "custom:fallout-vault-boy"
-                animation: "perception"
-              - type: "custom:fallout-vault-boy"
-                animation: "endurance"
-              - type: "custom:fallout-vault-boy"
-                animation: "charisma"
-              - type: "custom:fallout-vault-boy"
-                animation: "intelligence"
-              - type: "custom:fallout-vault-boy"
-                animation: "agility"
-              - type: "custom:fallout-vault-boy"
-                animation: "luck"
-              - type: "custom:fallout-vault-boy"
-                animation: "hacking"
-
-      - title: "SYSTEM MODULES GALLERY"
+      - title: "THEMATIC & CORE (21-28)"
         cards:
           - type: "grid"
             columns: 2
             cards:
               - type: "custom:fallout-vats-card"
+              - type: "custom:fallout-special-card"
+              - type: "custom:fallout-boot-card"
               - type: "custom:fallout-map-card"
-              - type: "custom:fallout-quest-card"
-              - type: "custom:fallout-inventory-card"
-              - type: "custom:fallout-workshop-card"
+              - type: "custom:fallout-vaultboy-status-card"
+                animation: "walking"
+              - type: "custom:fallout-stat-panel"
+                name: "RADIATION"
+              - type: "custom:fallout-terminal-card"
+                entity: "sensor.vault_mainframe_core_status"
               - type: "custom:fallout-radio-card"
+
+      - title: "UTILITIES A (29-40)"
+        cards:
+          - type: "grid"
+            columns: 2
+            cards:
+              - type: "custom:fallout-settlement-card"
+              - type: "custom:fallout-holotape-card"
+              - type: "custom:fallout-broadcast-card"
+              - type: "custom:fallout-message-card"
+              - type: "custom:fallout-spark-card"
+              - type: "custom:fallout-bar-card"
+              - type: "custom:fallout-gauge-card"
+              - type: "custom:fallout-timeline-card"
+              - type: "custom:fallout-dist-card"
+              - type: "custom:fallout-grid-card"
+              - type: "custom:fallout-header-card"
+              - type: "custom:fallout-divider-card"
+
+      - title: "UTILITIES B (41-52)"
+        cards:
+          - type: "grid"
+            columns: 2
+            cards:
+              - type: "custom:fallout-tab-card"
+              - type: "custom:fallout-frame-card"
+              - type: "custom:fallout-scan-card"
+              - type: "custom:fallout-modal-card"
+              - type: "custom:fallout-tip-card"
+              - type: "custom:fallout-bread-card"
+              - type: "custom:fallout-inventory-card"
+              - type: "custom:fallout-quest-card"
+              - type: "custom:fallout-camera-card"
+              - type: "custom:fallout-score-card"
+              - type: "custom:fallout-cap-card"
+              - type: "custom:fallout-workshop-card"
 
   - title: "SHOWCASE: AMBER (NEW VEGAS)"
     path: "showcase-amber"
@@ -80,14 +102,6 @@ views:
             animation: "thumbs_up"
             color: "#ffb642"
           - type: "custom:fallout-boot-card"
-          - type: "custom:fallout-map-card"
-          - type: "grid"
-            columns: 2
-            cards:
-              - type: "custom:fallout-mainframe-card"
-                entity: "sensor.vault_mainframe_core_status"
-              - type: "custom:fallout-rad-card"
-                entity: "sensor.radiation_levels"
 
   - title: "SHOWCASE: BLUE (76)"
     path: "showcase-blue"
@@ -101,11 +115,3 @@ views:
             animation: "thumbs_up"
             color: "#42b6ff"
           - type: "custom:fallout-boot-card"
-          - type: "custom:fallout-radio-card"
-          - type: "grid"
-            columns: 2
-            cards:
-              - type: "custom:fallout-mainframe-card"
-                entity: "sensor.vault_mainframe_core_status"
-              - type: "custom:fallout-rad-card"
-                entity: "sensor.radiation_levels"
