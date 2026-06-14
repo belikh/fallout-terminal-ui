@@ -71,8 +71,68 @@ const FALLOUT_STYLES = `
   </style>
 `;
 
+class FalloutCardEditor extends HTMLElement {
+  constructor() { super(); }
+  setConfig(config) {
+    this._config = Object.assign({}, config);
+    this.render();
+  }
+  set hass(hass) {
+    this._hass = hass;
+    this.render();
+  }
+  render() {
+    if (!this._hass || !this._config || this._rendered) return;
+    this.innerHTML = `
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <ha-entity-picker label="Entity (Optional for some cards)"></ha-entity-picker>
+        <ha-textfield label="Custom Title (Optional)"></ha-textfield>
+        <ha-textfield label="Animation (for Vault Boy)" placeholder="idle, alert, walking..."></ha-textfield>
+        <ha-textfield label="Color Override" placeholder="#9cff57"></ha-textfield>
+        <ha-textfield label="Domain Override" placeholder="switch, light..."></ha-textfield>
+        <ha-textfield label="Service Override" placeholder="toggle, turn_on..."></ha-textfield>
+      </div>
+    `;
+    
+    const entityPicker = this.querySelector('ha-entity-picker');
+    entityPicker.hass = this._hass;
+    entityPicker.value = this._config.entity || '';
+    entityPicker.addEventListener('value-changed', (e) => {
+      this._config = { ...this._config, entity: e.detail.value };
+      this.fireEvent();
+    });
+
+    const inputs = this.querySelectorAll('ha-textfield');
+    const fields = ['title', 'animation', 'color', 'domain', 'service'];
+    inputs.forEach((input, index) => {
+      input.value = this._config[fields[index]] || '';
+      input.addEventListener('input', (e) => {
+        if (e.target.value) {
+          this._config[fields[index]] = e.target.value;
+        } else {
+          delete this._config[fields[index]];
+        }
+        this.fireEvent();
+      });
+    });
+
+    this._rendered = true;
+  }
+  fireEvent() {
+    this.dispatchEvent(new CustomEvent('config-changed', {
+      detail: { config: this._config },
+      bubbles: true,
+      composed: true
+    }));
+  }
+}
+customElements.define('fallout-card-editor', FalloutCardEditor);
+
 const defineRobcoCard = (className, tagName, renderFn, attachEventsFn = null) => {
   class Card extends HTMLElement {
+    static getConfigElement() { return document.createElement('fallout-card-editor'); }
+    static getStubConfig() { return { type: 'custom:' + tagName, entity: '' }; }
+    
     set hass(hass) {
       this._hass = hass;
       if (!this.container) {
@@ -81,8 +141,6 @@ const defineRobcoCard = (className, tagName, renderFn, attachEventsFn = null) =>
         this.container.innerHTML = renderFn(this.config, hass);
         if (attachEventsFn) attachEventsFn(this.container, this.config, hass);
       } else {
-        // Update content if needed, but preserve event listeners by checking innerHTML logic.
-        // For simplicity in this suite, we re-render and re-attach.
         this.container.innerHTML = renderFn(this.config, hass);
         if (attachEventsFn) attachEventsFn(this.container, this.config, hass);
       }
@@ -91,6 +149,15 @@ const defineRobcoCard = (className, tagName, renderFn, attachEventsFn = null) =>
     getCardSize() { return 2; }
   }
   customElements.define(tagName, Card);
+  
+  // Register for Visual Editor
+  window.customCards = window.customCards || [];
+  window.customCards.push({
+    type: tagName,
+    name: "RobCo " + tagName.replace('fallout-', '').replace('-card', '').replace(/-/g, ' ').toUpperCase(),
+    preview: true,
+    description: "RobCo Industries Component"
+  });
 };
 
 // 1-10: DIAGNOSTIC CARDS

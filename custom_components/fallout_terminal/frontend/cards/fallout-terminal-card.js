@@ -68,6 +68,8 @@ class FalloutTerminalCard extends HTMLElement {
     }
     this.config = config;
   }
+  static getConfigElement() { return document.createElement('fallout-card-editor'); }
+  static getStubConfig() { return { type: 'custom:fallout-terminal-card', entity: '' }; }
 
   getCardSize() {
     return 3;
@@ -78,7 +80,7 @@ customElements.define('fallout-terminal-card', FalloutTerminalCard);
 window.customCards = window.customCards || [];
 window.customCards.push({
   type: "fallout-terminal-card",
-  name: "Fallout Terminal Monitor Card",
-  preview: false,
+  name: "RobCo Terminal Monitor Card",
+  preview: true,
   description: "A RobCo inspired diagnostic terminal card for tracking entity lifecycles."
 });

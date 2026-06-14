@@ -45,6 +45,15 @@ class FalloutStatPanel extends HTMLElement {
     }
     this.config = config;
   }
+  static getConfigElement() { return document.createElement('fallout-card-editor'); }
+  static getStubConfig() { return { type: 'custom:fallout-stat-panel', entity: '' }; }
 }
 
 customElements.define('fallout-stat-panel', FalloutStatPanel);
+window.customCards = window.customCards || [];
+window.customCards.push({
+  type: "fallout-stat-panel",
+  name: "RobCo Stat Panel",
+  preview: true,
+  description: "A RobCo inspired stat panel."
+});

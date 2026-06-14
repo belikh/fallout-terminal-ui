@@ -1,10 +1,12 @@
 """The Fallout Terminal Integration."""
 from __future__ import annotations
 
+import os
 import random
 from homeassistant.core import HomeAssistant
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.helpers.entity import Entity
+from homeassistant.components.frontend import add_extra_js_url
 
 from .const import DOMAIN
 
@@ -12,6 +14,16 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Fallout Terminal from a config entry."""
     hass.data.setdefault(DOMAIN, {})
     hass.data[DOMAIN][entry.entry_id] = entry.data
+    
+    # Register the static path for frontend resources
+    frontend_dir = os.path.join(os.path.dirname(__file__), "frontend")
+    hass.http.register_static_path("/fallout_terminal_ui", frontend_dir, cache_headers=False)
+
+    # Automatically register Lovelace cards and dependencies
+    add_extra_js_url(hass, "/fallout_terminal_ui/assets/vault-boy-engine.js")
+    add_extra_js_url(hass, "/fallout_terminal_ui/cards/fallout-ui-suite.js")
+    add_extra_js_url(hass, "/fallout_terminal_ui/cards/fallout-stat-panel.js")
+    add_extra_js_url(hass, "/fallout_terminal_ui/cards/fallout-terminal-card.js")
     
     await hass.config_entries.async_forward_entry_setups(entry, ["sensor"])
     return True
