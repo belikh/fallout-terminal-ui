@@ -1,6 +1,6 @@
 {
   "name": "fallout-terminal-ui",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Retro CRT Lovelace components and themes for Home Assistant",
   "main": "frontend/cards/fallout-terminal-card.js",
   "scripts": {

@@ -55,8 +55,11 @@ class VaultDiagnosticSensor(SensorEntity):
             self._attr_native_value = random.randint(1000, 50000)
         elif self._attr_native_unit_of_measurement == "Dwellers":
             self._attr_native_value = random.randint(10, 200)
+        elif self._attr_native_unit_of_measurement == "kg/h":
+            self._attr_native_value = round(random.uniform(2.0, 10.0), 1)
         else:
             self._attr_native_value = "Operational"
+            self._attr_native_unit_of_measurement = None # ensure no unit for string states
         
         self._attr_extra_state_attributes = {
             "last_diagnostic": "SUCCESS",
