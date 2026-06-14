@@ -1,9 +1,9 @@
-title: "ROBCO INDUSTRIES - MASTER DEMO"
+title: "ROBCO INDUSTRIES - MASTER DEMO v2.0"
 views:
-  - title: "SYSTEM SHOWCASE"
-    path: "showcase"
+  - title: "SHOWCASE: GREEN (DEFAULT)"
+    path: "showcase-green"
     type: "sections"
-    theme: "fallout_retro_theme"
+    theme: "fallout_retro_green"
     sections:
       - title: "COMMAND CENTER"
         cards:
@@ -19,6 +19,19 @@ views:
                 entity: "sensor.vault_mainframe_core_status"
               - type: "custom:fallout-rad-card"
                 entity: "sensor.radiation_levels"
+
+      - title: "INTERACTIVE CONTROLS"
+        cards:
+          - type: "grid"
+            columns: 2
+            cards:
+              - type: "custom:fallout-switch-card"
+                entity: "switch.power_relay"
+              - type: "custom:fallout-lock-card"
+                entity: "lock.vault_main_door"
+              - type: "custom:fallout-sequence-card"
+                entity: "script.init_purge"
+              - type: "custom:fallout-estop-card"
 
       - title: "S.P.E.C.I.A.L. MATRIX"
         cards:
@@ -43,20 +56,6 @@ views:
               - type: "custom:fallout-vault-boy"
                 animation: "hacking"
 
-      - title: "VITAL DIAGNOSTICS"
-        cards:
-          - type: "grid"
-            columns: 3
-            cards:
-              - type: "custom:fallout-stat-panel"
-                entity: "sensor.purified_water_supply"
-              - type: "custom:fallout-stat-panel"
-                entity: "sensor.fusion_core_charge"
-              - type: "custom:fallout-stat-panel"
-                entity: "sensor.vault_population"
-          - type: "custom:fallout-hull-card"
-            entity: "sensor.structural_breach_probability"
-
       - title: "SYSTEM MODULES GALLERY"
         cards:
           - type: "grid"
@@ -68,14 +67,45 @@ views:
               - type: "custom:fallout-inventory-card"
               - type: "custom:fallout-workshop-card"
               - type: "custom:fallout-radio-card"
-              - type: "custom:fallout-cap-card"
-              - type: "custom:fallout-camera-card"
 
-      - title: "CRITICAL ALERTS"
+  - title: "SHOWCASE: AMBER (NEW VEGAS)"
+    path: "showcase-amber"
+    type: "sections"
+    theme: "fallout_retro_amber"
+    sections:
+      - title: "COMMAND CENTER"
         cards:
           - type: "custom:fallout-vaultboy-status-card"
-            animation: "alert"
-            color: "#ff6b5e"
-          - type: "custom:fallout-estop-card"
-          - type: "custom:fallout-lock-card"
-            entity: "lock.vault_main_door"
+            title: "OVERSEER STATUS"
+            animation: "thumbs_up"
+            color: "#ffb642"
+          - type: "custom:fallout-boot-card"
+          - type: "custom:fallout-map-card"
+          - type: "grid"
+            columns: 2
+            cards:
+              - type: "custom:fallout-mainframe-card"
+                entity: "sensor.vault_mainframe_core_status"
+              - type: "custom:fallout-rad-card"
+                entity: "sensor.radiation_levels"
+
+  - title: "SHOWCASE: BLUE (76)"
+    path: "showcase-blue"
+    type: "sections"
+    theme: "fallout_retro_blue"
+    sections:
+      - title: "COMMAND CENTER"
+        cards:
+          - type: "custom:fallout-vaultboy-status-card"
+            title: "OVERSEER STATUS"
+            animation: "thumbs_up"
+            color: "#42b6ff"
+          - type: "custom:fallout-boot-card"
+          - type: "custom:fallout-radio-card"
+          - type: "grid"
+            columns: 2
+            cards:
+              - type: "custom:fallout-mainframe-card"
+                entity: "sensor.vault_mainframe_core_status"
+              - type: "custom:fallout-rad-card"
+                entity: "sensor.radiation_levels"

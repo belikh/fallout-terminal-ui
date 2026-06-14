@@ -41,18 +41,51 @@ const FALLOUT_STYLES = `
     .meta { font-size: 0.7em; color: rgba(156, 255, 87, 0.5); margin-top: 10px; border-top: 1px dashed rgba(156, 255, 87, 0.2); padding-top: 5px; }
     .blink { animation: blink 1s step-end infinite; }
     @keyframes blink { 50% { opacity: 0; } }
+    
+    .typewriter {
+      overflow: hidden;
+      white-space: nowrap;
+      margin: 0;
+      animation: typing 1.5s steps(40, end);
+    }
+    @keyframes typing {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+    .interactive-btn {
+      background: none; 
+      border: 2px solid var(--primary-text-color, #9cff57); 
+      color: var(--primary-text-color, #9cff57); 
+      padding: 10px 20px; 
+      cursor: pointer; 
+      text-transform: uppercase; 
+      font-family: 'IBM Plex Mono'; 
+      font-weight: bold; 
+      box-shadow: 0 0 10px rgba(156,255,87,0.2);
+      transition: all 0.1s;
+    }
+    .interactive-btn:active {
+      background: var(--primary-text-color, #9cff57);
+      color: #000;
+    }
   </style>
 `;
 
-const defineRobcoCard = (className, tagName, renderFn) => {
+const defineRobcoCard = (className, tagName, renderFn, attachEventsFn = null) => {
   class Card extends HTMLElement {
     set hass(hass) {
       this._hass = hass;
       if (!this.container) {
         this.innerHTML = FALLOUT_STYLES + '<div class="robco-card"></div>';
         this.container = this.querySelector('.robco-card');
+        this.container.innerHTML = renderFn(this.config, hass);
+        if (attachEventsFn) attachEventsFn(this.container, this.config, hass);
+      } else {
+        // Update content if needed, but preserve event listeners by checking innerHTML logic.
+        // For simplicity in this suite, we re-render and re-attach.
+        this.container.innerHTML = renderFn(this.config, hass);
+        if (attachEventsFn) attachEventsFn(this.container, this.config, hass);
       }
-      this.container.innerHTML = renderFn(this.config, hass);
     }
     setConfig(config) { this.config = config; }
     getCardSize() { return 2; }
@@ -89,28 +122,43 @@ const defineRobcoCard = (className, tagName, renderFn) => {
 
 // 11-20: CONTROL CARDS
 [
-  ['RobcoSwitchCard', 'fallout-switch-card', 'TOGGLE'],
-  ['RobcoButtonCard', 'fallout-button-card', 'EXECUTE'],
-  ['RobcoSliderCard', 'fallout-slider-card', 'VALVE'],
-  ['RobcoLockCard', 'fallout-lock-card', 'SECURITY SEAL'],
-  ['RobcoModeCard', 'fallout-mode-card', 'LOGIC MODE'],
-  ['RobcoSequenceCard', 'fallout-sequence-card', 'CMD SEQUENCE'],
-  ['RobcoResetCard', 'fallout-reset-card', 'SYSTEM RESET'],
-  ['RobcoEStopCard', 'fallout-estop-card', 'EMERGENCY STOP'],
-  ['RobcoOverrideCard', 'fallout-override-card', 'MANUAL OVERRIDE'],
-  ['RobcoCalibrateCard', 'fallout-calibrate-card', 'CALIBRATION']
-].forEach(([cls, tag, title]) => {
+  ['RobcoSwitchCard', 'fallout-switch-card', 'TOGGLE', 'switch', 'toggle'],
+  ['RobcoButtonCard', 'fallout-button-card', 'EXECUTE', 'button', 'press'],
+  ['RobcoSliderCard', 'fallout-slider-card', 'VALVE', 'input_number', 'set_value'],
+  ['RobcoLockCard', 'fallout-lock-card', 'SECURITY SEAL', 'lock', 'toggle'],
+  ['RobcoModeCard', 'fallout-mode-card', 'LOGIC MODE', 'input_select', 'select_next'],
+  ['RobcoSequenceCard', 'fallout-sequence-card', 'CMD SEQUENCE', 'script', 'turn_on'],
+  ['RobcoResetCard', 'fallout-reset-card', 'SYSTEM RESET', 'homeassistant', 'restart'],
+  ['RobcoEStopCard', 'fallout-estop-card', 'EMERGENCY STOP', 'homeassistant', 'stop'],
+  ['RobcoOverrideCard', 'fallout-override-card', 'MANUAL OVERRIDE', 'input_boolean', 'toggle'],
+  ['RobcoCalibrateCard', 'fallout-calibrate-card', 'CALIBRATION', 'homeassistant', 'update_entity']
+].forEach(([cls, tag, title, defaultDomain, defaultService]) => {
   defineRobcoCard(cls, tag, (cfg, hass) => {
     return `
-      <div class="header">${title}</div>
+      <div class="header"><div class="typewriter">${title}</div></div>
       <div style="display: flex; justify-content: center; padding: 10px;">
-        <button style="background: none; border: 2px solid #9cff57; color: #9cff57; padding: 10px 20px; cursor: pointer; text-transform: uppercase; font-family: 'IBM Plex Mono'; font-weight: bold; box-shadow: 0 0 10px rgba(156,255,87,0.2);">
+        <button class="interactive-btn action-btn">
           INITIALIZE ${title}
         </button>
       </div>
     `;
+  }, (container, cfg, hass) => {
+    const btn = container.querySelector('.action-btn');
+    btn.addEventListener('click', () => {
+      // Provide audio feedback if possible
+      try { const audio = new Audio('/local/sounds/terminal_click.mp3'); audio.play().catch(e => {}); } catch(e) {}
+      
+      const domain = cfg.domain || defaultDomain;
+      const service = cfg.service || defaultService;
+      if (cfg.entity) {
+        hass.callService(domain, service, { entity_id: cfg.entity });
+      } else {
+        hass.callService(domain, service, {});
+      }
+    });
   });
 });
+
 
 // 21-30: THEMATIC CARDS
 defineRobcoCard('RobcoVatsCard', 'fallout-vats-card', (cfg, hass) => `
@@ -189,7 +237,7 @@ miscTags.forEach(tag => {
   defineRobcoCard('RobcoGeneric'+tag.replace(/-/g, ''), tag, (cfg) => {
     const layout = specificLayouts[tag] || '> MODULE INITIALIZED\n> SCANNING DATA...';
     return `
-      <div class="header">${tag.replace('fallout-', '').replace('-card', '').toUpperCase().replace(/-/g, ' ')}</div>
+      <div class="header"><div class="typewriter">${tag.replace('fallout-', '').replace('-card', '').toUpperCase().replace(/-/g, ' ')}</div></div>
       <div style="white-space: pre-wrap; font-size: 0.9em; line-height: 1.4;">${layout}</div>
       <div class="blink" style="margin-top: 5px;">_</div>
     `;

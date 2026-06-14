@@ -1,4 +1,4 @@
-fallout_retro_theme:
+fallout_retro_green:
   # Global Base Style Overrides
   primary-background-color: "#0b0f0a"
   secondary-background-color: "#11160f"
@@ -33,7 +33,7 @@ fallout_retro_theme:
   phosphor-glow-alert: "0 0 15px rgba(255, 107, 94, 0.6)"
 
   # Advanced Card-Mod Global Structural Tokens
-  card-mod-theme: fallout_retro_theme
+  card-mod-theme: fallout_retro_green
   card-mod-icon-color: "#9cff57"
   
   # Mushroom Plugin Mapping Directives
@@ -41,3 +41,57 @@ fallout_retro_theme:
   mush-rgb-success: 125, 255, 143
   mush-rgb-warning: 230, 193, 90
   mush-rgb-info: 122, 191, 99
+
+fallout_retro_amber:
+  primary-background-color: "#120a00"
+  secondary-background-color: "#1c1100"
+  card-background-color: "rgba(18, 10, 0, 0.92)"
+  ha-card-background: "rgba(18, 10, 0, 0.92)"
+  primary-text-color: "#ffcc66"
+  secondary-text-color: "#cc9933"
+  primary-color: "#ffb642"
+  accent-color: "#ffe08a"
+  warning-color: "#ff5500"
+  error-color: "#ff0000"
+  success-color: "#ffcc66"
+  divider-color: "rgba(255, 182, 66, 0.18)"
+  paper-item-icon-color: "#cc9933"
+  paper-item-icon-active-color: "#ffb642"
+  ha-card-border-radius: "6px"
+  ha-card-box-shadow: "0 0 0 1px rgba(255,182,66,0.14), 0 8px 24px rgba(0,0,0,0.45)"
+  font-family-body: "IBM Plex Mono, Menlo, Courier New, monospace"
+  font-family-headline: "IBM Plex Mono, Menlo, Courier New, monospace"
+  crt-flicker-opacity: "0.02"
+  crt-scanline-spacing: "4px"
+  crt-curvature-radius: "10%"
+  phosphor-glow-primary: "0 0 10px rgba(255, 182, 66, 0.4)"
+  phosphor-glow-alert: "0 0 15px rgba(255, 0, 0, 0.6)"
+  card-mod-theme: fallout_retro_amber
+  card-mod-icon-color: "#ffb642"
+
+fallout_retro_blue:
+  primary-background-color: "#000812"
+  secondary-background-color: "#00111c"
+  card-background-color: "rgba(0, 8, 18, 0.92)"
+  ha-card-background: "rgba(0, 8, 18, 0.92)"
+  primary-text-color: "#66ccff"
+  secondary-text-color: "#3399cc"
+  primary-color: "#42b6ff"
+  accent-color: "#8ae0ff"
+  warning-color: "#ffcc66"
+  error-color: "#ff6b5e"
+  success-color: "#42b6ff"
+  divider-color: "rgba(66, 182, 255, 0.18)"
+  paper-item-icon-color: "#3399cc"
+  paper-item-icon-active-color: "#42b6ff"
+  ha-card-border-radius: "6px"
+  ha-card-box-shadow: "0 0 0 1px rgba(66,182,255,0.14), 0 8px 24px rgba(0,0,0,0.45)"
+  font-family-body: "IBM Plex Mono, Menlo, Courier New, monospace"
+  font-family-headline: "IBM Plex Mono, Menlo, Courier New, monospace"
+  crt-flicker-opacity: "0.02"
+  crt-scanline-spacing: "4px"
+  crt-curvature-radius: "10%"
+  phosphor-glow-primary: "0 0 10px rgba(66, 182, 255, 0.4)"
+  phosphor-glow-alert: "0 0 15px rgba(255, 107, 94, 0.6)"
+  card-mod-theme: fallout_retro_blue
+  card-mod-icon-color: "#42b6ff"

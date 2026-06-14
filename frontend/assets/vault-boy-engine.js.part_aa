@@ -1,0 +1,94 @@
+class FalloutVaultBoy extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+  }
+
+  static get observedAttributes() { return ['animation', 'color']; }
+  attributeChangedCallback() { this.render(); }
+
+  set animation(val) { this.setAttribute('animation', val); }
+  get animation() { return this.getAttribute('animation') || 'idle'; }
+
+  set color(val) { this.setAttribute('color', val); }
+  get color() { return this.getAttribute('color') || '#9cff57'; }
+
+  render() {
+    const color = this.color;
+    
+    // AUTHENTIC VAULT BOY ANATOMY (Complex Paths)
+    const HAIR = `
+      <path d="M40 15 C45 10 55 10 60 15 C65 20 65 30 60 35 C58 38 52 35 50 32 C48 35 42 38 40 35 C35 30 35 20 40 15" fill="none" stroke="${color}" stroke-width="2" />
+      <path d="M50 15 Q60 5 75 15 T85 35 Q85 45 75 50" fill="none" stroke="${color}" stroke-width="1.5" /> <!-- Pompadour Swirl -->
+    `;
+
+    const FACE = `
+      <path d="M35 35 C35 20 65 20 65 35 C65 55 58 65 50 65 C42 65 35 55 35 35 Z" fill="none" stroke="${color}" stroke-width="2.5" /> <!-- Jawline -->
+      <path d="M42 38 Q45 35 48 38 M52 38 Q55 35 58 38" fill="none" stroke="${color}" stroke-width="2" /> <!-- Brows -->
+      <circle cx="45" cy="45" r="2.5" fill="${color}" /> <!-- Eye L -->
+      <circle cx="55" cy="45" r="2.5" fill="${color}" /> <!-- Eye R -->
+      <path d="M42 55 Q50 62 58 55" fill="none" stroke="${color}" stroke-width="2" /> <!-- Signature Smile -->
+      <path d="M35 40 C32 40 30 45 32 48 M65 40 C68 40 70 45 68 48" fill="none" stroke="${color}" stroke-width="1.5" /> <!-- Ears -->
+    `;
+
+    const SUIT = `
+      <path d="M40 65 L35 70 L35 90 L65 90 L65 70 L60 65" fill="none" stroke="${color}" stroke-width="2.5" /> <!-- Torso -->
+      <path d="M45 65 L50 72 L55 65" fill="none" stroke="${color}" stroke-width="2" /> <!-- Collar -->
+      <path d="M40 75 L60 75 M40 82 L60 82" stroke="${color}" stroke-width="1" opacity="0.6" /> <!-- Suit Ridges -->
+      <text x="44" y="86" fill="${color}" font-size="8" font-family="monospace" font-weight="bold">111</text>
+    `;
+
+    const animations = {
+      idle: `
+        <svg viewBox="0 0 100 100" class="crt-glow">
+          <g class="breathe">
+            ${HAIR}
+            ${FACE}
+            ${SUIT}
+            <path d="M35 70 L20 85 C15 90 20 95 25 90 L35 80" fill="none" stroke="${color}" stroke-width="2.5" /> <!-- Arm L -->
+            <path d="M65 70 L80 85 C85 90 80 95 75 90 L65 80" fill="none" stroke="${color}" stroke-width="2.5" /> <!-- Arm R -->
+            <path d="M40 90 L35 105 M60 90 L65 105" stroke="${color}" stroke-width="3" /> <!-- Legs -->
+          </g>
+          <style>
+            @keyframes breathe { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-2px) scale(1.01); } }
+            .breathe { animation: breathe 3.5s ease-in-out infinite; transform-origin: center 90%; }
+            .crt-glow { filter: drop-shadow(0 0 4px ${color}); }
+          </style>
+        </svg>
+      `,
+      thumbs_up: `
+        <svg viewBox="0 0 100 100" class="crt-glow">
+          ${HAIR}
+          ${FACE}
+          ${SUIT}
+          <path d="M35 70 L20 85" fill="none" stroke="${color}" stroke-width="2.5" /> <!-- Arm L -->
+          <g class="thumb-action">
+            <path d="M65 70 L85 55" stroke="${color}" stroke-width="3" fill="none" />
+            <path d="M85 55 C90 55 95 50 92 45 C90 40 85 42 85 50" fill="${color}" /> <!-- High Detail Thumb -->
+            <circle cx="85" cy="55" r="4" fill="none" stroke="${color}" stroke-width="1" /> <!-- Hand base -->
+          </g>
+          <path d="M40 90 L38 105 M60 90 L62 105" stroke="${color}" stroke-width="3" />
+          <style>
+            @keyframes wink { 0%, 90%, 100% { opacity: 1; } 95% { opacity: 0; } }
+            @keyframes swagger { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
+            .thumb-action { animation: swagger 1.5s ease-in-out infinite; transform-origin: 65% 70%; }
+            .crt-glow { filter: drop-shadow(0 0 6px ${color}); }
+          </style>
+        </svg>
+      `,
+      walking: `
+        <svg viewBox="0 0 100 100" class="crt-glow">
+          <g class="bob">
+            ${HAIR}
+            ${FACE}
+            ${SUIT}
+          </g>
+          <path class="arm-l" d="M35 70 L25 90" stroke="${color}" stroke-width="2.5" fill="none" />
+          <path class="arm-r" d="M65 70 L75 90" stroke="${color}" stroke-width="2.5" fill="none" />
+          <path class="leg-l" d="M40 90 L30 105" stroke="${color}" stroke-width="3.5" />
+          <path class="leg-r" d="M60 90 L70 105" stroke="${color}" stroke-width="3.5" />
+          <style>
+            @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(2px); } }
+            @keyframes swing { 0%, 100% { transform: rotate(-20deg); } 50% { transform: rotate(20deg); } }
+            .bob { animation: bob 0.6s ease-in-out infinite; }
+            .leg-l { animation: swing 0.6s infinite; tra
