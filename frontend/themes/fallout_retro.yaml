@@ -25,6 +25,13 @@ fallout_retro_theme:
   font-family-body: "IBM Plex Mono, Menlo, Courier New, monospace"
   font-family-headline: "IBM Plex Mono, Menlo, Courier New, monospace"
 
+  # CRT Atmosphere Tokens
+  crt-flicker-opacity: "0.02"
+  crt-scanline-spacing: "4px"
+  crt-curvature-radius: "10%"
+  phosphor-glow-primary: "0 0 10px rgba(156, 255, 87, 0.4)"
+  phosphor-glow-alert: "0 0 15px rgba(255, 107, 94, 0.6)"
+
   # Advanced Card-Mod Global Structural Tokens
   card-mod-theme: fallout_retro_theme
   card-mod-icon-color: "#9cff57"

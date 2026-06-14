@@ -7,30 +7,38 @@
 const FALLOUT_STYLES = `
   <style>
     .robco-card {
-      background: rgba(9, 16, 10, 0.94);
+      background: #0b0f0a;
       color: var(--primary-text-color, #b8ff9a);
-      border: 1px solid rgba(156, 255, 87, 0.25);
-      box-shadow: 0 0 15px rgba(156, 255, 87, 0.1);
-      border-radius: 4px;
-      font-family: 'IBM Plex Mono', monospace;
-      padding: 12px;
+      border: 2px solid rgba(156, 255, 87, 0.4);
+      box-shadow: 0 0 20px rgba(156, 255, 87, 0.1), inset 0 0 15px rgba(0,0,0,0.9);
+      border-radius: 10% / 2%;
+      padding: 20px;
       position: relative;
       overflow: hidden;
       text-transform: uppercase;
+      font-family: 'IBM Plex Mono', monospace;
     }
-    .robco-card::before {
+    .robco-card::after {
       content: "";
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: linear-gradient(rgba(18,16,16,0) 50%, rgba(0,0,0,0.1) 50%), linear-gradient(90deg, rgba(255,0,0,0.03), rgba(0,255,0,0.01), rgba(0,0,255,0.03));
-      background-size: 100% 2px, 2px 100%;
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background: radial-gradient(circle, transparent 70%, rgba(0,0,0,0.4) 100%);
       pointer-events: none;
-      z-index: 10;
     }
-    .header { border-bottom: 1px solid rgba(156, 255, 87, 0.3); margin-bottom: 8px; font-weight: bold; }
-    .status-ok { color: #9cff57; }
-    .status-warn { color: #e6c15a; }
-    .status-alert { color: #ff6b5e; }
+    .header { 
+      border-bottom: 2px solid rgba(156, 255, 87, 0.5); 
+      margin-bottom: 15px; 
+      font-weight: 900; 
+      font-size: 1.2em;
+      letter-spacing: 2px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .header::before { content: "[ "; }
+    .header::after { content: " ]"; }
+    .status-ok { color: #9cff57; text-shadow: 0 0 5px #9cff57; }
+    .status-warn { color: #e6c15a; text-shadow: 0 0 5px #e6c15a; }
+    .status-alert { color: #ff6b5e; text-shadow: 0 0 8px #ff6b5e; }
+    .meta { font-size: 0.7em; color: rgba(156, 255, 87, 0.5); margin-top: 10px; border-top: 1px dashed rgba(156, 255, 87, 0.2); padding-top: 5px; }
     .blink { animation: blink 1s step-end infinite; }
     @keyframes blink { 50% { opacity: 0; } }
   </style>
@@ -67,10 +75,14 @@ const defineRobcoCard = (className, tagName, renderFn) => {
 ].forEach(([cls, tag, title]) => {
   defineRobcoCard(cls, tag, (cfg, hass) => {
     const state = hass.states[cfg.entity] || { state: 'OFFLINE', attributes: {} };
+    const statusClass = state.state === 'OFFLINE' ? 'status-alert' : 'status-ok';
     return `
       <div class="header">${title}</div>
-      <div>> STATUS: <span class="status-ok">${state.state}</span></div>
-      <div style="font-size: 0.8em; margin-top: 4px;">ID: ${cfg.entity || 'NULL'}</div>
+      <div style="font-size: 1.1em;">> MONITORING... [ <span class="${statusClass}">${state.state}</span> ]</div>
+      <div class="meta">
+        <div>UUID: ${cfg.entity || '0x0000'}</div>
+        <div>LINK: SECURE_V6_LINE</div>
+      </div>
     `;
   });
 });

@@ -3,14 +3,21 @@
 When asked to generate Home Assistant themes, dashboard YAML, card-mod styles, or custom card components under this framework, you MUST strictly adhere to the following architectural dictates:
 
 ## 1. Geometric & Structural Constraints
-* No modern fluid roundings. All `border-radius` parameters must be clamped between `0px` and `6px`.
-* Containers must utilize sharp borders with high-contrast inner dropshadows to simulate physical cathode-ray tube (CRT) housings.
-* Enforce hard dividing structures. Use `divider-color` attributes with transparent alphas (`rgba(156, 255, 87, 0.18)`) instead of white spaces or margins to break content sections.
+* No modern fluid roundings. All `border-radius` parameters must be clamped between `0px` and `6px`, or use the "CRT Curve" (`10% / 2%`) for monitor housings.
+* Containers must utilize sharp borders with high-contrast inner dropshadows and radial gradients to simulate physical cathode-ray tube (CRT) housings.
+* Enforce hard dividing structures. Use `divider-color` attributes with transparent alphas (`rgba(156, 255, 87, 0.18)`) or dashed lines to break content sections.
 
 ## 2. Textual Rendering Protocol
 * Transform all static titles, system headers, and raw states to **UPPERCASE** automatically within your generation loops.
 * Typography must exclusive use mono-spaced font families. Do not allow `Roboto`, `Segoe UI`, or default system sans-serif injections.
 * Prepend execution carets (`>`, `>>`, `[OK]`, `[WARN]`) to structural data lists and entity labels to maintain terminal immersion.
+* Utilize `text-shadow` for phosphor glowing effects on critical status text.
+
+## 3. High-Fidelity SVG Protocol (Vault Boy)
+* **NEVER** use simple stick-figures. Use complex cubic-bezier paths (`C` commands) for hair swirls, facial curvature, and Vault-Tec suit contours.
+* Character features must include: Hair swirl, eyes with highlight, smile, and "111" chest marking.
+* Animations must use fluid CSS keyframes with `transform-origin` optimization for joint rotation.
+* Always wrap character SVGs in a `.monitor-housing` container with `.scanlines` and `.flicker` overlay layers.
 
 ## 3. UI Inventory Structural Matrix
 Map user layout requirements using the following structural component mapping matrix:

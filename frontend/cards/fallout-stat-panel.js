@@ -5,14 +5,20 @@ class FalloutStatPanel extends HTMLElement {
       this.innerHTML = `
         <style>
           ha-card.fallout-stat-panel {
-            background: rgba(9, 16, 10, 0.94);
+            background: #0b0f0a;
             color: #9cff57;
-            border: 1px solid rgba(156, 255, 87, 0.25);
+            border: 2px solid rgba(156, 255, 87, 0.3);
             border-radius: 4px;
-            padding: 8px;
+            padding: 15px;
             font-family: 'IBM Plex Mono', monospace;
             text-transform: uppercase;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+            position: relative;
+            overflow: hidden;
           }
+          .stat-label { font-size: 0.8em; border-bottom: 1px solid rgba(156, 255, 87, 0.2); margin-bottom: 8px; }
+          .stat-value { font-size: 1.8em; font-weight: 900; text-shadow: 0 0 8px rgba(156, 255, 87, 0.6); }
+          .stat-unit { font-size: 0.6em; opacity: 0.7; margin-left: 4px; }
         </style>
         <ha-card class="fallout-stat-panel">
           <div id="content"></div>
@@ -23,9 +29,13 @@ class FalloutStatPanel extends HTMLElement {
 
     const entityId = this.config.entity;
     const state = hass.states[entityId];
+    const value = state ? state.state : '---';
+    const unit = state ? state.attributes.unit_of_measurement || '' : '';
+    const label = this.config.name || (state ? state.attributes.friendly_name : entityId);
+
     this.content.innerHTML = `
-      <div>${this.config.name || entityId}</div>
-      <div style="font-size: 1.5em; font-weight: bold;">${state ? state.state : 'N/A'} ${state ? state.attributes.unit_of_measurement || '' : ''}</div>
+      <div class="stat-label">> ${label}</div>
+      <div class="stat-value">${value}<span class="stat-unit">${unit}</span></div>
     `;
   }
 
