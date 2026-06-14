@@ -17,19 +17,24 @@ Welcome to the **RobCo Industries Unified Operating System v2.0**. This project 
 ## 🛠️ Installation
 
 ### Option 1: HACS (Recommended)
-This repository is fully HACS-compliant.
+This repository is fully HACS-compliant as an **Integration**. You no longer need to add it twice!
 1. Open HACS in Home Assistant.
 2. Go to **Integrations** -> Top right menu -> **Custom repositories**.
 3. Add this repository URL (`https://github.com/belikh/fallout-terminal-ui`) and select **Integration**.
 4. Install the integration.
-5. Add the repository URL again to **Frontend** -> **Custom repositories** and select **Lovelace**.
-6. Install the frontend components.
-7. Restart Home Assistant.
+5. **Restart Home Assistant.**
+6. *That's it!* The Python integration will automatically serve the UI files and register them to your Lovelace dashboards.
 
 ### Option 2: Manual
 1. Copy the `custom_components/fallout_terminal` folder to your Home Assistant `custom_components` directory.
-2. Copy the `frontend` folder contents to your `www` (local) directory.
-3. Add the themes to your `themes.yaml` and the JS resources to your Lovelace dashboard configuration.
+2. Restart Home Assistant.
+
+---
+
+## 🎨 Visual Editor Support
+
+All 50+ cards now feature full **Visual Editor** support in Home Assistant. 
+When editing a dashboard, simply click "Add Card" and search for "RobCo" or scroll down to the Custom section. You'll get a user-friendly UI to select your entities, override domains/services, and preview the Vault Boy animations in real-time.
 
 ---
 
