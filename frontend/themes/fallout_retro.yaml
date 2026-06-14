@@ -1,0 +1,36 @@
+fallout_retro_theme:
+  # Global Base Style Overrides
+  primary-background-color: "#0b0f0a"
+  secondary-background-color: "#11160f"
+  card-background-color: "rgba(9, 16, 10, 0.92)"
+  ha-card-background: "rgba(9, 16, 10, 0.92)"
+  primary-text-color: "#b8ff9a"
+  secondary-text-color: "#7abf63"
+
+  # Alert and Diagnostic Matrix
+  primary-color: "#9cff57"
+  accent-color: "#d8ff8a"
+  warning-color: "#e6c15a"
+  error-color: "#ff6b5e"
+  success-color: "#7dff8f"
+
+  # Structural Dividers and Geometry
+  divider-color: "rgba(156, 255, 87, 0.18)"
+  paper-item-icon-color: "#7abf63"
+  paper-item-icon-active-color: "#9cff57"
+  ha-card-border-radius: "6px"
+  ha-card-box-shadow: "0 0 0 1px rgba(156,255,87,0.14), 0 8px 24px rgba(0,0,0,0.45)"
+
+  # Typography Definitions
+  font-family-body: "IBM Plex Mono, Menlo, Courier New, monospace"
+  font-family-headline: "IBM Plex Mono, Menlo, Courier New, monospace"
+
+  # Advanced Card-Mod Global Structural Tokens
+  card-mod-theme: fallout_retro_theme
+  card-mod-icon-color: "#9cff57"
+  
+  # Mushroom Plugin Mapping Directives
+  mush-rgb-primary: 156, 255, 87
+  mush-rgb-success: 125, 255, 143
+  mush-rgb-warning: 230, 193, 90
+  mush-rgb-info: 122, 191, 99

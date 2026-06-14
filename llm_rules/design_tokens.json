@@ -1,0 +1,36 @@
+{
+  "system_identifier": "ROBCO_OS_DESIGN_SYSTEM",
+  "version": "2287.4",
+  "color_palette": {
+    "monochrome_phosphor": {
+      "hex": "#9cff57",
+      "rgb": [156, 255, 87],
+      "use_case": "Primary focus elements, glowing borders, active state parameters"
+    },
+    "muted_amber": {
+      "hex": "#e6c15a",
+      "rgb": [230, 193, 90],
+      "use_case": "Secondary warning thresholds, degraded operations, structural highlights"
+    },
+    "radiation_red": {
+      "hex": "#ff6b5e",
+      "rgb": [255, 107, 94],
+      "use_case": "Critical fault detection, structural breach, automation lockouts"
+    },
+    "terminal_void": {
+      "hex": "#0b0f0a",
+      "rgb": [11, 15, 10],
+      "use_case": "Canvas background, infinite container depth"
+    }
+  },
+  "geometry": {
+    "border_radius": "6px",
+    "border_width": "1px",
+    "shadow_profile": "0 0 0 1px rgba(156,255,87,0.14), 0 8px 24px rgba(0,0,0,0.45)"
+  },
+  "typography": {
+    "font_stack": ["IBM Plex Mono", "Menlo", "Courier New", "monospace"],
+    "case_transform": "uppercase_preferred",
+    "line_height": 1.4
+  }
+}
