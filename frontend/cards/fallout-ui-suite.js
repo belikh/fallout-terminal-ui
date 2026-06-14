@@ -1,6 +1,6 @@
 /* 
   ROBCO INDUSTRIES UI COMPONENT SUITE
-  Version: 2287.4-EXT
+  Version: 2287.4-EXT-ULTRA
   Contains: Diagnostic, Control, Layout, and Thematic Cards
 */
 
@@ -104,7 +104,7 @@ const defineRobcoCard = (className, tagName, renderFn) => {
     return `
       <div class="header">${title}</div>
       <div style="display: flex; justify-content: center; padding: 10px;">
-        <button style="background: none; border: 1px solid #9cff57; color: #9cff57; padding: 5px 15px; cursor: pointer; text-transform: uppercase;">
+        <button style="background: none; border: 2px solid #9cff57; color: #9cff57; padding: 10px 20px; cursor: pointer; text-transform: uppercase; font-family: 'IBM Plex Mono'; font-weight: bold; box-shadow: 0 0 10px rgba(156,255,87,0.2);">
           INITIALIZE ${title}
         </button>
       </div>
@@ -112,25 +112,26 @@ const defineRobcoCard = (className, tagName, renderFn) => {
   });
 });
 
-// 21-30: THEMATIC CARDS (VATS, PIP-BOY, ETC)
+// 21-30: THEMATIC CARDS
 defineRobcoCard('RobcoVatsCard', 'fallout-vats-card', (cfg, hass) => `
-  <div class="header">V.A.T.S. TARGETING SYSTEM</div>
-  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 5px;">
-    <div>HEAD: 95%</div><div>TORSO: 80%</div>
-    <div>L-ARM: 45%</div><div>R-ARM: 45%</div>
+  <div class="header">V.A.T.S. TARGETING</div>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.9em;">
+    <div>[HEAD] 95%</div><div>[TORSO] 80%</div>
+    <div>[L-ARM] 45%</div><div>[R-ARM] 45%</div>
+    <div>[L-LEG] 60%</div><div>[R-LEG] 60%</div>
   </div>
 `);
 
 defineRobcoCard('RobcoSpecialCard', 'fallout-special-card', (cfg, hass) => `
-  <div class="header">S.P.E.C.I.A.L. STATS</div>
-  <div style="columns: 2; font-size: 0.9em;">
-    S: 5 | P: 8 | E: 4<br>C: 6 | I: 10 | A: 7 | L: 9
+  <div class="header">S.P.E.C.I.A.L.</div>
+  <div style="columns: 2; font-size: 1.1em; line-height: 1.6;">
+    STR: 05 | PER: 08<br>END: 04 | CHA: 06<br>INT: 10 | AGI: 07<br>LUK: 09
   </div>
 `);
 
 // 31-40: ADVANCED LAYOUT & BOOT
 defineRobcoCard('RobcoBootCard', 'fallout-boot-card', (cfg, hass) => `
-  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 0.85em;">
+  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 0.85em; padding: 10px; background: #000; border: 1px solid #9cff57;">
     <div>BOOTING ROBCO INDUSTRIES (TM) TERMLINK...</div>
     <div>COPYRIGHT 2075-2077 ROBCO INDUSTRIES</div>
     <div>- SERVER 6 -</div>
@@ -143,10 +144,11 @@ defineRobcoCard('RobcoBootCard', 'fallout-boot-card', (cfg, hass) => `
 
 defineRobcoCard('RobcoMapCard', 'fallout-map-card', (cfg, hass) => `
   <div class="header">LOCAL AREA MAP</div>
-  <div style="height: 100px; border: 1px dashed #9cff57; display: flex; align-items: center; justify-content: center; position: relative;">
-    <div style="position: absolute; top: 10px; left: 10px;">[N]</div>
-    <div style="width: 10px; height: 10px; background: #9cff57; border-radius: 50%;" class="blink"></div>
-    <div style="font-size: 0.7em; margin-top: 40px;">VAULT 111 ENTRANCE</div>
+  <div style="height: 120px; border: 1px dashed rgba(156, 255, 87, 0.4); display: flex; align-items: center; justify-content: center; position: relative; background: rgba(0,0,0,0.3);">
+    <div style="position: absolute; top: 5px; left: 10px; font-size: 0.8em;">[N]</div>
+    <div style="width: 12px; height: 12px; background: #9cff57; border-radius: 50%; box-shadow: 0 0 10px #9cff57;" class="blink"></div>
+    <div style="font-size: 0.7em; margin-top: 50px;">VAULT 111 ENTRANCE</div>
+    <div style="position: absolute; bottom: 5px; right: 10px; font-size: 0.6em;">COORD: 42.3601, -71.0589</div>
   </div>
 `);
 
@@ -154,42 +156,42 @@ defineRobcoCard('RobcoVaultBoyStatusCard', 'fallout-vaultboy-status-card', (cfg,
   const animation = cfg.animation || 'idle';
   const color = cfg.color || '#9cff57';
   return `
-    <div class="header">VAULT BOY STATUS MONITOR</div>
-    <div style="height: 120px; width: 100%; display: flex; justify-content: center;">
+    <div class="header">VAULT BOY MONITOR</div>
+    <div style="height: 150px; width: 100%; display: flex; justify-content: center; background: rgba(0,0,0,0.2); border-radius: 8px;">
       <fallout-vault-boy animation="${animation}" color="${color}"></fallout-vault-boy>
     </div>
-    <div style="text-align: center; margin-top: 5px;">> STATE: ${animation.toUpperCase()}</div>
+    <div style="text-align: center; margin-top: 10px; font-weight: bold; letter-spacing: 1px;">> STATE: ${animation.toUpperCase()}</div>
   `;
 });
 
-// Refined Generic Generator for remaining cards
-const specificLayouts = {
-  'fallout-inventory-card': '> WEAPONS (3) | APPAREL (12) | AID (45)',
-  'fallout-quest-card': '> [ACTIVE] FIND OVERSEER\n> [COMPLETED] ESCAPE VAULT',
-  'fallout-radio-card': 'DIALING... 98.7 DIAMOND CITY RADIO',
-  'fallout-camera-card': '[REC] FEED: ENTRANCE_CAM_01',
-  'fallout-score-card': 'S.C.O.R.E. LEVEL: 76 [||||||---]',
-  'fallout-cap-card': 'BALANCE: 12,450 CAPS',
-  'fallout-workshop-card': 'POWER: 40 | WATER: 20 | DEFENSE: 150',
-};
-
-const moreTags = [
-  'fallout-settlement-card', 'fallout-holotape-card', 'fallout-broadcast-card', 'fallout-message-card',
-  'fallout-spark-card', 'fallout-bar-card', 'fallout-gauge-card', 'fallout-timeline-card',
-  'fallout-dist-card', 'fallout-grid-card', 'fallout-header-card', 'fallout-divider-card',
-  'fallout-tab-card', 'fallout-frame-card', 'fallout-scan-card', 'fallout-modal-card',
-  'fallout-tip-card', 'fallout-bread-card', 'fallout-inventory-card', 'fallout-quest-card',
-  'fallout-radio-card', 'fallout-camera-card', 'fallout-score-card', 'fallout-cap-card', 'fallout-workshop-card'
+// 41-50: MISC UTILITY
+const miscTags = [
+  'fallout-quest-card', 'fallout-inventory-card', 'fallout-workshop-card', 'fallout-radio-card',
+  'fallout-cap-card', 'fallout-camera-card', 'fallout-settlement-card', 'fallout-broadcast-card',
+  'fallout-holotape-card', 'fallout-message-card'
 ];
 
-moreTags.forEach(tag => {
+const specificLayouts = {
+  'fallout-inventory-card': '> WEAPONS (3)\n> APPAREL (12)\n> AID (45)\n> MISC (102)',
+  'fallout-quest-card': '> [ACTIVE] FIND OVERSEER\n> [COMPLETED] ESCAPE VAULT',
+  'fallout-radio-card': 'DIALING...\n98.7 DIAMOND CITY RADIO\n[ SIGNAL STRENGTH: 88% ]',
+  'fallout-camera-card': '[REC] FEED: ENTRANCE_CAM_01\nBUFFERING... [OK]',
+  'fallout-cap-card': 'BALANCE: 12,450 CAPS\nDAILY CHANGE: +450',
+  'fallout-workshop-card': 'POWER: 40 | WATER: 20\nDEFENSE: 150 | BEDS: 12',
+  'fallout-settlement-card': 'POPULATION: 12\nHAPPINESS: 85%\nRESOURCES: STABLE',
+  'fallout-broadcast-card': 'EMERGENCY BROADCAST SYSTEM\nALL CLEAR IN SECTOR 7',
+  'fallout-holotape-card': 'READING HOLOTAPE...\nTITLE: OVERSEER LOG 01\nLENGTH: 02:45',
+  'fallout-message-card': '1 NEW MESSAGE\nFROM: VAULT-TEC CENTRAL\nPRIORITY: URGENT'
+};
+
+miscTags.forEach(tag => {
   if (customElements.get(tag)) return; 
   defineRobcoCard('RobcoGeneric'+tag.replace(/-/g, ''), tag, (cfg) => {
     const layout = specificLayouts[tag] || '> MODULE INITIALIZED\n> SCANNING DATA...';
     return `
       <div class="header">${tag.replace('fallout-', '').replace('-card', '').toUpperCase().replace(/-/g, ' ')}</div>
-      <div style="white-space: pre-wrap;">${layout}</div>
-      <div class="blink">_</div>
+      <div style="white-space: pre-wrap; font-size: 0.9em; line-height: 1.4;">${layout}</div>
+      <div class="blink" style="margin-top: 5px;">_</div>
     `;
   });
 });
