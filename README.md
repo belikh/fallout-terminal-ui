@@ -1,105 +1,178 @@
-# Fallout Terminal UI & Integration System for Home Assistant
+# Fallout Terminal UI — RobCo Industries Design System for Home Assistant
 
-Welcome to the **RobCo Industries Unified Operating System v2.0**. This project provides a comprehensive, high-fidelity retro-CRT interface for Home Assistant, inspired by the iconic terminals and Pip-Boys of the Fallout universe.
+A retro-CRT Fallout-themed design system for Home Assistant Lovelace. Every card binds to **your own
+entities** and re-skins through a single set of design tokens, so one theme switch repaints the whole
+suite in phosphor green, New Vegas amber, or Fallout 76 blue.
 
-## 🚀 Features (Version 2.0)
-
-*   **High-Fidelity Vault Boy Animation Engine:** Features 34 distinct CSS-animated, high-detail vector SVG states (S.P.E.C.I.A.L. attributes, combat, status effects, etc.).
-*   **50+ Specialized UI Cards:** A massive library of RobCo-styled cards for diagnostics, controls, thematic views (V.A.T.S., S.P.E.C.I.A.L., Map), and miscellaneous utilities.
-*   **Interactive Controls:** Fully functional buttons and switches that trigger actual Home Assistant services directly from the terminal cards.
-*   **Authentic CRT Atmosphere:** Pervasive phosphor flicker, scanlines, radial curvature, and glowing text shadows (`text-shadow`, `drop-shadow`).
-*   **Typewriter Text Effects:** Animated terminal boot-up and data loading headers.
-*   **Multi-Color Themes:** Support for classic Phosphor Green, New Vegas Amber, and Fallout 76 Blue.
-*   **Vault Mainframe Integration:** A custom Python component generating a simulated Vault Diagnostic sensor.
+> This is a focused set of real, entity-bound cards — not a padded catalogue. Each card does a
+> genuine job and reflects the state of the thing it monitors.
 
 ---
 
-## 🛠️ Installation
+## Features
 
-### Option 1: HACS (Recommended)
-This repository is fully HACS-compliant as an **Integration**. You no longer need to add it twice!
-1. Open HACS in Home Assistant.
-2. Go to **Integrations** -> Top right menu -> **Custom repositories**.
-3. Add this repository URL (`https://github.com/belikh/fallout-terminal-ui`) and select **Integration**.
-4. Install the integration.
-5. **Restart Home Assistant.**
-6. *That's it!* The Python integration will automatically serve the UI files and register them to your Lovelace dashboards.
-
-### Option 2: Manual
-1. Copy the `custom_components/fallout_terminal` folder to your Home Assistant `custom_components` directory.
-2. Restart Home Assistant.
-
----
-
-## 🎨 Visual Editor Support
-
-All 50+ cards now feature full **Visual Editor** support in Home Assistant. 
-When editing a dashboard, simply click "Add Card" and search for "RobCo" or scroll down to the Custom section. You'll get a user-friendly UI to select your entities, override domains/services, and preview the Vault Boy animations in real-time.
+- **6 entity-bound cards** — gauge, status, control, Vault Boy, stats (Pip-Boy), terminal.
+- **One domain-adaptive control card** — renders the right control (toggle / lock / press / slider /
+  cover) for whatever entity you give it, instead of a separate card per action.
+- **Themed via design tokens** — three themes drive `--fallout-*` CSS variables that all cards
+  consume; cards fall back to phosphor green when no Fallout theme is active.
+- **CRT atmosphere** — scanlines, phosphor flicker, glass-curvature vignette, glowing text.
+- **Animated Vault Boy mascot** — a hand-drawn `<fallout-vault-boy>` web component with 5 genuinely
+  distinct, state-driven poses: `idle`, `thumbs_up`, `alert`, `radiation`, `sleeping`. (A
+  higher-fidelity art set may replace these later without changing card configs.)
+- **Per-card visual editors** — each card exposes exactly its own options in the dashboard UI.
+- **No fake entities** — the integration only serves the frontend and registers the cards.
 
 ---
 
-## 🎨 Themes
+## Installation
 
-The suite includes three distinct color profiles. Select them in your Home Assistant profile or set them per-dashboard/view:
+### HACS (recommended)
+1. HACS → Integrations → top-right menu → **Custom repositories**.
+2. Add this repo URL and select **Integration**.
+3. Install, then **restart Home Assistant**.
+4. Add the integration (Settings → Devices & Services → **Add Integration** → "Fallout Terminal UI").
+   It registers the cards and Vault Boy engine automatically — nothing to add to your Lovelace
+   resources by hand.
 
-*   **`fallout_retro_green`**: The classic, high-contrast phosphor green.
-*   **`fallout_retro_amber`**: The warm, degraded amber of New Vegas.
-*   **`fallout_retro_blue`**: The cool, modern cyan of Fallout 76.
-
----
-
-## 🏃‍♂️ Vault Boy Animation Engine
-
-The `<fallout-vault-boy>` custom web component supports 34 unique animations. You can integrate it directly into your own cards or use the included `fallout-vaultboy-status-card`.
-
-**Available States:**
-`idle`, `walking`, `thumbs_up`, `alert`, `radiation`, `combat`, `crafting`, `running`, `sleeping`, `dead`, `strength`, `perception`, `endurance`, `charisma`, `intelligence`, `agility`, `luck`, `hacking`, `lockpicking`, `healing`, `trading`, `scavenging`, `repairing`, `drinking`, `eating`, `chems`, `heavy_weapons`, `energy_weapons`, `explosives`, `stealth`, `speech`, `science`, `swimming`, `flying`.
+### Manual
+1. Copy `custom_components/fallout_terminal` into your HA `custom_components` directory.
+2. Restart Home Assistant and add the integration as above.
 
 ---
 
-## 🗂️ Component Library
+## Themes
 
-This package provides over 50 specific custom elements registered in your Lovelace UI. 
+Three themes live in `frontend/themes/fallout_retro.yaml`. Select one per-dashboard or in your user
+profile:
 
-### Diagnostic Cards (Read-only)
-Prefix: `custom:fallout-[type]-card`
-Types: `mainframe`, `power`, `water`, `food`, `defense`, `rad`, `temp`, `humid`, `o2`, `hull`.
+- `fallout_retro_green` — classic high-contrast phosphor green
+- `fallout_retro_amber` — warm New Vegas amber
+- `fallout_retro_blue` — cool Fallout 76 blue
 
-### Control Cards (Interactive)
-Prefix: `custom:fallout-[type]-card`
-Types: `switch`, `button`, `slider`, `lock`, `mode`, `sequence`, `reset`, `estop`, `override`, `calibrate`.
-*Note: Ensure you pass the `entity` parameter in the card configuration to bind it to a real HA entity.*
-
-### Thematic & Layout Cards
-Types: `custom:fallout-vats-card`, `custom:fallout-special-card`, `custom:fallout-boot-card`, `custom:fallout-map-card`, `custom:fallout-stat-panel`.
-
-### Miscellaneous
-Types: `quest`, `inventory`, `workshop`, `radio`, `cap`, `camera`, `settlement`, `broadcast`, `holotape`, `message`.
+Each theme sets both the standard Home Assistant variables and the `--fallout-*` design tokens, so
+switching it re-skins the whole card suite.
 
 ---
 
-## ⚙️ Example Dashboard Configuration
+## Cards
 
-Check the `demo_dashboard.yaml` file in this repository for a massive, multi-theme showcase. Here is a minimal example:
+All cards take `type: custom:<name>`. Most options are optional; only `entity` is usually required.
 
+### `fallout-gauge-card`
+Pip-Boy meter for any numeric sensor, with threshold colours.
 ```yaml
-title: "TERMINAL"
-theme: "fallout_retro_green"
-views:
-  - title: "SYSTEM"
-    type: "sections"
-    sections:
-      - title: "DIAGNOSTICS"
-        cards:
-          - type: "custom:fallout-vaultboy-status-card"
-            animation: "thumbs_up"
-          - type: "custom:fallout-mainframe-card"
-            entity: "sensor.vault_mainframe_core_status"
-      - title: "CONTROLS"
-        cards:
-          - type: "custom:fallout-switch-card"
-            entity: "switch.my_smart_plug"
+type: custom:fallout-gauge-card
+entity: sensor.reactor_output
+name: REACTOR OUTPUT      # optional
+min: 0                    # optional (default 0)
+max: 100                  # optional (default 100)
+unit: "%"                 # optional (defaults to the entity's unit)
+invert: false             # optional (true = lower values fill the bar)
+segments:                 # optional; first matching upper-bound wins
+  - { to: 60,  color: "var(--fallout-accent)" }
+  - { to: 85,  color: "var(--fallout-warn)" }
+  - { to: 100, color: "var(--fallout-alert)" }
+```
+
+### `fallout-status-card`
+Terminal status readout that maps an entity's state to a label + severity (`[OK]` / `[WARN]` /
+`[ALERT]`). Sensible defaults for `binary_sensor` `device_class: problem`.
+```yaml
+type: custom:fallout-status-card
+entity: binary_sensor.hull_breach
+name: HULL INTEGRITY      # optional
+states:                   # optional per-state label + level (ok | warn | alert)
+  on:  { label: BREACH DETECTED, level: alert }
+  off: { label: SEALED,          level: ok }
+```
+
+### `fallout-control-card`
+One control that adapts to the entity's domain:
+- toggleable (`switch`/`light`/`fan`/`input_boolean`/`automation`/`humidifier`/`siren`) → ON/OFF toggle
+- `lock` → SEAL / UNSEAL
+- momentary (`button`/`input_button`/`scene`/`script`) → EXECUTE press
+- numeric (`input_number`/`number`) → slider
+- `cover` → OPEN / STOP / CLOSE
+```yaml
+type: custom:fallout-control-card
+entity: switch.perimeter_turret
+name: TURRET              # optional
+```
+
+### `fallout-vaultboy-card`
+Drives the Vault Boy mascot from an entity's state. First matching rule wins.
+```yaml
+type: custom:fallout-vaultboy-card
+entity: sensor.radiation          # optional; omit for a static pose
+name: VAULT MONITOR               # optional
+default_animation: thumbs_up      # optional (default idle)
+mappings:                         # optional
+  - { state: "on", animation: alert, level: alert }
+  - { above: 5,    animation: radiation, level: warn }
+  - { below: 1,    animation: sleeping, level: ok }
+```
+Valid animations: `idle`, `thumbs_up`, `alert`, `radiation`, `sleeping`
+(see `window.RobCoFallout.VAULT_BOY_STATES`).
+
+### `fallout-stats-card`
+Pip-Boy S.T.A.T.S. panel for grouped sensors, with healthy-range bars and a reactive mascot.
+Backwards-compatible alias: `pipboy-stats-card`.
+```yaml
+type: custom:fallout-stats-card
+title: VAULT DWELLER
+weight_entity: sensor.body_weight   # optional headline value
+bmi_entity:    sensor.bmi           # optional
+stable_entity: binary_sensor.scale  # optional ("on" = fresh reading)
+stats:
+  - { label: BODY FAT, entity: sensor.body_fat, min: 0, max: 40, healthy_max: 22, unit: "%" }
+  - { label: MUSCLE,   entity: sensor.muscle,   min: 0, max: 60, healthy_min: 35, unit: "%" }
+ideal_min_entity: sensor.ideal_weight_min   # optional; draws a target weight range
+ideal_max_entity: sensor.ideal_weight_max
+```
+
+### `fallout-terminal-card`
+Terminal-style diagnostic readout for one entity, optionally listing its attributes.
+```yaml
+type: custom:fallout-terminal-card
+entity: switch.perimeter_turret
+title: DEVICE LOG        # optional
+show_attributes: true    # optional
 ```
 
 ---
-*RobCo Industries Unified Operating System - Copyright 2075-2077*
+
+## Example dashboard
+
+See [`demo_dashboard.yaml`](demo_dashboard.yaml) for a full example using your own entities. Minimal
+version:
+
+```yaml
+title: TERMINAL
+views:
+  - title: SYSTEM
+    theme: fallout_retro_green
+    type: sections
+    sections:
+      - title: DIAGNOSTICS
+        cards:
+          - type: custom:fallout-gauge-card
+            entity: sensor.cpu_temperature
+            name: CORE TEMP
+          - type: custom:fallout-vaultboy-card
+            entity: binary_sensor.front_door
+            mappings:
+              - { state: "on", animation: alert, level: alert }
+            default_animation: thumbs_up
+```
+
+---
+
+## Development
+
+`test/test-harness.html` renders every card against a mock `hass` with no Home Assistant required.
+`node test/screenshot.mjs` produces a headless screenshot for visual verification.
+
+---
+
+*RobCo Industries Unified Operating System — design system v4.0.0*

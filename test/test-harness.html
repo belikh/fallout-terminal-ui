@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<!--
+  Standalone render harness for the Fallout card suite.
+
+  Loads the real card scripts in the same order the integration registers them, fakes the bits of
+  Home Assistant the cards touch (`hass.states`, `hass.callService`), and instantiates every card
+  with a sample config. Open in a browser, or screenshot headlessly via test/screenshot.mjs.
+
+  This is the source of truth for "does it actually render" — the original suite's sin was looking
+  done while nothing was wired up.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>RobCo Fallout UI — Render Harness</title>
+  <style>
+    body {
+      margin: 0; padding: 24px;
+      background: #05080a;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+      align-items: start;
+    }
+    /* Mimic an active fallout theme so the token plumbing is exercised. */
+    :root {
+      --fallout-accent: #9cff57;
+      --fallout-accent-dim: #5f9c3a;
+      --fallout-bg: #0b0f0a;
+    }
+    .cell { min-width: 0; }
+    .cell > h2 {
+      color: #5f9c3a; font: 12px/1.4 "Courier New", monospace;
+      letter-spacing: 2px; margin: 0 0 8px;
+    }
+  </style>
+
+  <!-- Same load order as custom_components/.../__init__.py -->
+  <script src="../custom_components/fallout_terminal/frontend/cards/fallout-core.js"></script>
+  <script src="../custom_components/fallout_terminal/frontend/assets/vault-boy-engine.js"></script>
+  <script src="../custom_components/fallout_terminal/frontend/cards/fallout-gauge-card.js"></script>
+  <script src="../custom_components/fallout_terminal/frontend/cards/fallout-status-card.js"></script>
+  <script src="../custom_components/fallout_terminal/frontend/cards/fallout-control-card.js"></script>
+  <script src="../custom_components/fallout_terminal/frontend/cards/fallout-vaultboy-card.js"></script>
+  <script src="../custom_components/fallout_terminal/frontend/cards/fallout-stats-card.js"></script>
+  <script src="../custom_components/fallout_terminal/frontend/cards/fallout-terminal-card.js"></script>
+</head>
+<body>
+<script>
+  // ---- mock Home Assistant --------------------------------------------------
+  const hass = {
+    states: {
+      "sensor.reactor_output":   { state: "73.4", attributes: { friendly_name: "Reactor Output", unit_of_measurement: "%" } },
+      "sensor.radiation":        { state: "4.2",  attributes: { friendly_name: "Radiation Level", unit_of_measurement: "rad/h" } },
+      "sensor.water_purity":     { state: "12",   attributes: { friendly_name: "Water Purity", unit_of_measurement: "%" } },
+      "sensor.core_temp":        { state: "612",  attributes: { friendly_name: "Core Temperature", unit_of_measurement: "°C" } },
+      "binary_sensor.breach":    { state: "on",   attributes: { friendly_name: "Hull Breach", device_class: "problem" } },
+      "binary_sensor.door":      { state: "off",  attributes: { friendly_name: "Vault Door" } },
+      "switch.turret":           { state: "on",   attributes: { friendly_name: "Perimeter Turret" } },
+      "light.lab":               { state: "off",  attributes: { friendly_name: "Lab Lighting" } },
+      "lock.blast_door":         { state: "locked", attributes: { friendly_name: "Blast Door" } },
+      "input_number.valve":      { state: "60",   attributes: { friendly_name: "Coolant Valve", min: 0, max: 100, unit_of_measurement: "%" } },
+      "sensor.body_weight":      { state: "82.5", attributes: { friendly_name: "Body Weight", unit_of_measurement: "kg" } },
+      "sensor.body_fat":         { state: "18.2", attributes: { friendly_name: "Body Fat", unit_of_measurement: "%" } },
+      "sensor.muscle":           { state: "41.0", attributes: { friendly_name: "Muscle Mass", unit_of_measurement: "%" } },
+      "sensor.bmi":              { state: "24.1", attributes: { friendly_name: "BMI" } },
+      "sensor.unavailable_one":  { state: "unavailable", attributes: { friendly_name: "Offline Sensor" } },
+    },
+    callService(domain, service, data) {
+      console.log("callService:", domain, service, JSON.stringify(data || {}));
+      return Promise.resolve();
+    },
+  };
+
+  const cards = [
+    ["GAUGE", { type: "custom:fallout-gauge-card", entity: "sensor.reactor_output", name: "REACTOR OUTPUT",
+      segments: [{ to: 60, color: "var(--fallout-accent)" }, { to: 85, color: "var(--fallout-warn)" }, { to: 100, color: "var(--fallout-alert)" }] }],
+    ["GAUGE (rad)", { type: "custom:fallout-gauge-card", entity: "sensor.radiation", name: "GEIGER", min: 0, max: 10,
+      segments: [{ to: 3, color: "var(--fallout-accent)" }, { to: 6, color: "var(--fallout-warn)" }, { to: 10, color: "var(--fallout-alert)" }] }],
+    ["GAUGE (offline)", { type: "custom:fallout-gauge-card", entity: "sensor.unavailable_one", name: "GHOST" }],
+    ["STATUS (alert)", { type: "custom:fallout-status-card", entity: "binary_sensor.breach", name: "HULL INTEGRITY",
+      states: { on: { label: "BREACH DETECTED", level: "alert" }, off: { label: "SEALED", level: "ok" } } }],
+    ["STATUS (door)", { type: "custom:fallout-status-card", entity: "binary_sensor.door", name: "VAULT DOOR" }],
+    ["CONTROL (switch)", { type: "custom:fallout-control-card", entity: "switch.turret", name: "TURRET" }],
+    ["CONTROL (light)", { type: "custom:fallout-control-card", entity: "light.lab", name: "LAB LIGHTS" }],
+    ["CONTROL (lock)", { type: "custom:fallout-control-card", entity: "lock.blast_door", name: "BLAST DOOR" }],
+    ["CONTROL (number)", { type: "custom:fallout-control-card", entity: "input_number.valve", name: "COOLANT VALVE" }],
+    ["VAULT BOY (auto)", { type: "custom:fallout-vaultboy-card", entity: "sensor.radiation", name: "MONITOR",
+      mappings: [{ above: 4, animation: "radiation", level: "warn" }], default_animation: "thumbs_up" }],
+    ["VAULT BOY (alert)", { type: "custom:fallout-vaultboy-card", entity: "binary_sensor.breach", name: "STATUS",
+      mappings: [{ state: "on", animation: "alert", level: "alert" }], default_animation: "thumbs_up" }],
+    ["TERMINAL", { type: "custom:fallout-terminal-card", entity: "switch.turret", title: "DEVICE LOG", show_attributes: true }],
+    ["STATS", { type: "custom:fallout-stats-card", title: "VAULT DWELLER",
+      weight_entity: "sensor.body_weight", bmi_entity: "sensor.bmi",
+      stats: [
+        { label: "BODY FAT", entity: "sensor.body_fat", min: 0, max: 40, healthy_max: 22, unit: "%" },
+        { label: "MUSCLE", entity: "sensor.muscle", min: 0, max: 60, healthy_min: 35, unit: "%" },
+      ] }],
+  ];
+
+  for (const [label, config] of cards) {
+    const cell = document.createElement("div");
+    cell.className = "cell";
+    const h = document.createElement("h2");
+    h.textContent = label;
+    cell.appendChild(h);
+    try {
+      const el = document.createElement(config.type.replace("custom:", ""));
+      el.setConfig(config);
+      el.hass = hass;
+      cell.appendChild(el);
+    } catch (e) {
+      const err = document.createElement("pre");
+      err.style.color = "#ff6b5e";
+      err.textContent = "ERROR: " + e.message;
+      cell.appendChild(err);
+      console.error(label, e);
+    }
+    document.body.appendChild(cell);
+  }
+  window.__harnessReady = true;
+</script>
+</body>
+</html>

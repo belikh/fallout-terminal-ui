@@ -1,117 +1,83 @@
-title: "ROBCO INDUSTRIES - MASTER DEMO v2.0"
+# RobCo Industries — demo dashboard for the Fallout design system.
+#
+# Replace the example entity IDs (sensor.*, switch.*, etc.) with your own. Every card binds to real
+# entities; nothing here is simulated. Duplicate a view and change its `theme:` to see the suite
+# re-skin (green / amber / blue).
+
+title: "ROBCO TERMLINK"
 views:
-  - title: "ALL 50+ CARDS (GREEN)"
-    path: "showcase-all"
-    type: "sections"
-    theme: "fallout_retro_green"
+  - title: "VAULT STATUS"
+    path: vault-status
+    theme: fallout_retro_green
+    type: sections
     sections:
-      - title: "DIAGNOSTICS (1-10)"
+      - title: "DIAGNOSTICS"
         cards:
-          - type: "grid"
-            columns: 2
-            cards:
-              - type: "custom:fallout-mainframe-card"
-              - type: "custom:fallout-power-card"
-              - type: "custom:fallout-water-card"
-              - type: "custom:fallout-food-card"
-              - type: "custom:fallout-defense-card"
-              - type: "custom:fallout-rad-card"
-              - type: "custom:fallout-temp-card"
-              - type: "custom:fallout-humid-card"
-              - type: "custom:fallout-o2-card"
-              - type: "custom:fallout-hull-card"
+          - type: custom:fallout-gauge-card
+            entity: sensor.cpu_temperature
+            name: CORE TEMP
+            min: 0
+            max: 100
+            unit: "°C"
+            segments:
+              - { to: 60, color: "var(--fallout-accent)" }
+              - { to: 80, color: "var(--fallout-warn)" }
+              - { to: 100, color: "var(--fallout-alert)" }
+          - type: custom:fallout-gauge-card
+            entity: sensor.battery_level
+            name: RESERVE POWER
+            min: 0
+            max: 100
+            unit: "%"
+            invert: true
+            segments:
+              - { to: 20, color: "var(--fallout-alert)" }
+              - { to: 50, color: "var(--fallout-warn)" }
+              - { to: 100, color: "var(--fallout-accent)" }
+          - type: custom:fallout-status-card
+            entity: binary_sensor.front_door
+            name: VAULT DOOR
+            states:
+              "on": { label: OPEN, level: warn }
+              "off": { label: SEALED, level: ok }
 
-      - title: "CONTROLS (11-20)"
+      - title: "CONTROLS"
         cards:
-          - type: "grid"
-            columns: 2
-            cards:
-              - type: "custom:fallout-switch-card"
-              - type: "custom:fallout-button-card"
-              - type: "custom:fallout-slider-card"
-              - type: "custom:fallout-lock-card"
-              - type: "custom:fallout-mode-card"
-              - type: "custom:fallout-sequence-card"
-              - type: "custom:fallout-reset-card"
-              - type: "custom:fallout-estop-card"
-              - type: "custom:fallout-override-card"
-              - type: "custom:fallout-calibrate-card"
+          - type: custom:fallout-control-card
+            entity: switch.living_room
+            name: PERIMETER LIGHTS
+          - type: custom:fallout-control-card
+            entity: lock.front_door
+            name: BLAST DOOR
+          - type: custom:fallout-control-card
+            entity: input_number.thermostat_target
+            name: CLIMATE VALVE
 
-      - title: "THEMATIC & CORE (21-28)"
+      - title: "MONITOR"
         cards:
-          - type: "grid"
-            columns: 2
-            cards:
-              - type: "custom:fallout-vats-card"
-              - type: "custom:fallout-special-card"
-              - type: "custom:fallout-boot-card"
-              - type: "custom:fallout-map-card"
-              - type: "custom:fallout-vaultboy-status-card"
-                animation: "walking"
-              - type: "custom:fallout-stat-panel"
-                name: "RADIATION"
-              - type: "custom:fallout-terminal-card"
-                entity: "sensor.vault_mainframe_core_status"
-              - type: "custom:fallout-radio-card"
+          - type: custom:fallout-vaultboy-card
+            entity: binary_sensor.motion
+            name: SECURITY MONITOR
+            default_animation: thumbs_up
+            mappings:
+              - { state: "on", animation: alert, level: alert }
+          - type: custom:fallout-terminal-card
+            entity: switch.living_room
+            title: DEVICE LOG
+            show_attributes: true
 
-      - title: "UTILITIES A (29-40)"
-        cards:
-          - type: "grid"
-            columns: 2
-            cards:
-              - type: "custom:fallout-settlement-card"
-              - type: "custom:fallout-holotape-card"
-              - type: "custom:fallout-broadcast-card"
-              - type: "custom:fallout-message-card"
-              - type: "custom:fallout-spark-card"
-              - type: "custom:fallout-bar-card"
-              - type: "custom:fallout-gauge-card"
-              - type: "custom:fallout-timeline-card"
-              - type: "custom:fallout-dist-card"
-              - type: "custom:fallout-grid-card"
-              - type: "custom:fallout-header-card"
-              - type: "custom:fallout-divider-card"
-
-      - title: "UTILITIES B (41-52)"
-        cards:
-          - type: "grid"
-            columns: 2
-            cards:
-              - type: "custom:fallout-tab-card"
-              - type: "custom:fallout-frame-card"
-              - type: "custom:fallout-scan-card"
-              - type: "custom:fallout-modal-card"
-              - type: "custom:fallout-tip-card"
-              - type: "custom:fallout-bread-card"
-              - type: "custom:fallout-inventory-card"
-              - type: "custom:fallout-quest-card"
-              - type: "custom:fallout-camera-card"
-              - type: "custom:fallout-score-card"
-              - type: "custom:fallout-cap-card"
-              - type: "custom:fallout-workshop-card"
-
-  - title: "SHOWCASE: AMBER (NEW VEGAS)"
-    path: "showcase-amber"
-    type: "sections"
-    theme: "fallout_retro_amber"
+  - title: "DWELLER"
+    path: dweller
+    theme: fallout_retro_amber
+    type: sections
     sections:
-      - title: "COMMAND CENTER"
+      - title: "S.T.A.T.S."
         cards:
-          - type: "custom:fallout-vaultboy-status-card"
-            title: "OVERSEER STATUS"
-            animation: "thumbs_up"
-            color: "#ffb642"
-          - type: "custom:fallout-boot-card"
-
-  - title: "SHOWCASE: BLUE (76)"
-    path: "showcase-blue"
-    type: "sections"
-    theme: "fallout_retro_blue"
-    sections:
-      - title: "COMMAND CENTER"
-        cards:
-          - type: "custom:fallout-vaultboy-status-card"
-            title: "OVERSEER STATUS"
-            animation: "thumbs_up"
-            color: "#42b6ff"
-          - type: "custom:fallout-boot-card"
+          - type: custom:fallout-stats-card
+            title: VAULT DWELLER
+            weight_entity: sensor.body_weight
+            bmi_entity: sensor.bmi
+            stats:
+              - { label: BODY FAT, entity: sensor.body_fat, min: 0, max: 40, healthy_max: 22, unit: "%" }
+              - { label: MUSCLE, entity: sensor.muscle_mass, min: 0, max: 60, healthy_min: 35, unit: "%" }
+              - { label: WATER, entity: sensor.body_water, min: 0, max: 80, healthy_min: 45, unit: "%" }

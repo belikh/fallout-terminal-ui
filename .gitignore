@@ -1,2 +1,8 @@
 .gemini/
 gha-creds-*.json
+
+# Local dev / render-harness artifacts
+node_modules
+node_modules/
+test/*.png
+__pycache__/

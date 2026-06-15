@@ -1,8 +1,8 @@
 {
   "name": "fallout-terminal-ui",
-  "version": "2.0.3",
-  "description": "Retro CRT Lovelace components and themes for Home Assistant",
-  "main": "frontend/cards/fallout-terminal-card.js",
+  "version": "4.0.0",
+  "description": "RobCo Industries — Fallout-themed design system (CRT cards + themes) for Home Assistant",
+  "main": "custom_components/fallout_terminal/frontend/cards/fallout-core.js",
   "scripts": {
     "build": "echo \"No build required for vanilla JS implementation\" && exit 0"
   },

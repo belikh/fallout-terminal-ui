@@ -1,12 +1,12 @@
 {
   "domain": "fallout_terminal",
-  "name": "Fallout Terminal Core",
-  "codeowners": ["@cli-generated"],
+  "name": "Fallout Terminal UI",
+  "codeowners": [],
   "config_flow": true,
-  "documentation": "https://github.com/user/fallout-terminal",
-  "integration_type": "device",
-  "iot_class": "local_polling",
-  "issue_tracker": "https://github.com/user/fallout-terminal/issues",
+  "documentation": "https://github.com/belikh/fallout-terminal-ui",
+  "integration_type": "service",
+  "iot_class": "local_push",
+  "issue_tracker": "https://github.com/belikh/fallout-terminal-ui/issues",
   "requirements": [],
-  "version": "2.0.3"
+  "version": "4.0.0"
 }

@@ -1,81 +1,89 @@
+# RobCo Industries — Fallout Terminal themes.
+#
+# Each theme sets the standard Home Assistant variables (so the whole dashboard matches) AND the
+# --fallout-* design tokens that the custom cards consume. Selecting a theme therefore re-skins the
+# entire card suite; the cards fall back to phosphor green when no Fallout theme is active.
+
 fallout_retro_green:
-  # Global Base Style Overrides
+  # Standard Home Assistant variables
   primary-background-color: "#0b0f0a"
   secondary-background-color: "#11160f"
-  card-background-color: "rgba(9, 16, 10, 0.92)"
-  ha-card-background: "rgba(9, 16, 10, 0.92)"
+  card-background-color: "#0b0f0a"
+  ha-card-background: "#0b0f0a"
   primary-text-color: "#b8ff9a"
   secondary-text-color: "#7abf63"
-
-  # Alert and Diagnostic Matrix
+  disabled-text-color: "#4d7a3d"
   primary-color: "#9cff57"
   accent-color: "#d8ff8a"
   warning-color: "#e6c15a"
   error-color: "#ff6b5e"
   success-color: "#7dff8f"
-
-  # Structural Dividers and Geometry
   divider-color: "rgba(156, 255, 87, 0.18)"
   paper-item-icon-color: "#7abf63"
   paper-item-icon-active-color: "#9cff57"
   ha-card-border-radius: "6px"
   ha-card-box-shadow: "0 0 0 1px rgba(156,255,87,0.14), 0 8px 24px rgba(0,0,0,0.45)"
-
-  # Typography Definitions
-  font-family-body: "IBM Plex Mono, Menlo, Courier New, monospace"
-  font-family-headline: "IBM Plex Mono, Menlo, Courier New, monospace"
-
-  # CRT Atmosphere Tokens
-  crt-flicker-opacity: "0.02"
-  crt-scanline-spacing: "4px"
-  crt-curvature-radius: "10%"
-  phosphor-glow-primary: "0 0 10px rgba(156, 255, 87, 0.4)"
-  phosphor-glow-alert: "0 0 15px rgba(255, 107, 94, 0.6)"
-
-  # Advanced Card-Mod Global Structural Tokens
+  primary-font-family: "Share Tech Mono, IBM Plex Mono, Courier New, monospace"
+  paper-font-common-base_-_font-family: "Share Tech Mono, IBM Plex Mono, Courier New, monospace"
+  # Fallout design tokens (consumed by the custom cards)
+  fallout-accent: "#9cff57"
+  fallout-accent-dim: "#5f9c3a"
+  fallout-accent-soft: "rgba(156, 255, 87, 0.18)"
+  fallout-text: "#b8ff9a"
+  fallout-bg: "#0b0f0a"
+  fallout-bg-elev: "#11160f"
+  fallout-warn: "#e6c15a"
+  fallout-alert: "#ff6b5e"
+  fallout-glow: "rgba(156, 255, 87, 0.55)"
+  fallout-radius: "6px"
+  fallout-font: "Share Tech Mono, IBM Plex Mono, Courier New, monospace"
+  fallout-scanline-opacity: "0.25"
+  fallout-flicker-opacity: "0.04"
   card-mod-theme: fallout_retro_green
-  card-mod-icon-color: "#9cff57"
-  
-  # Mushroom Plugin Mapping Directives
-  mush-rgb-primary: 156, 255, 87
-  mush-rgb-success: 125, 255, 143
-  mush-rgb-warning: 230, 193, 90
-  mush-rgb-info: 122, 191, 99
 
 fallout_retro_amber:
   primary-background-color: "#120a00"
   secondary-background-color: "#1c1100"
-  card-background-color: "rgba(18, 10, 0, 0.92)"
-  ha-card-background: "rgba(18, 10, 0, 0.92)"
+  card-background-color: "#120a00"
+  ha-card-background: "#120a00"
   primary-text-color: "#ffcc66"
   secondary-text-color: "#cc9933"
+  disabled-text-color: "#7a5a1f"
   primary-color: "#ffb642"
   accent-color: "#ffe08a"
-  warning-color: "#ff5500"
-  error-color: "#ff0000"
+  warning-color: "#ff8c1a"
+  error-color: "#ff4136"
   success-color: "#ffcc66"
   divider-color: "rgba(255, 182, 66, 0.18)"
   paper-item-icon-color: "#cc9933"
   paper-item-icon-active-color: "#ffb642"
   ha-card-border-radius: "6px"
   ha-card-box-shadow: "0 0 0 1px rgba(255,182,66,0.14), 0 8px 24px rgba(0,0,0,0.45)"
-  font-family-body: "IBM Plex Mono, Menlo, Courier New, monospace"
-  font-family-headline: "IBM Plex Mono, Menlo, Courier New, monospace"
-  crt-flicker-opacity: "0.02"
-  crt-scanline-spacing: "4px"
-  crt-curvature-radius: "10%"
-  phosphor-glow-primary: "0 0 10px rgba(255, 182, 66, 0.4)"
-  phosphor-glow-alert: "0 0 15px rgba(255, 0, 0, 0.6)"
+  primary-font-family: "Share Tech Mono, IBM Plex Mono, Courier New, monospace"
+  paper-font-common-base_-_font-family: "Share Tech Mono, IBM Plex Mono, Courier New, monospace"
+  fallout-accent: "#ffb642"
+  fallout-accent-dim: "#9c6f2a"
+  fallout-accent-soft: "rgba(255, 182, 66, 0.18)"
+  fallout-text: "#ffcc66"
+  fallout-bg: "#120a00"
+  fallout-bg-elev: "#1c1100"
+  fallout-warn: "#ff8c1a"
+  fallout-alert: "#ff4136"
+  fallout-glow: "rgba(255, 182, 66, 0.55)"
+  fallout-radius: "6px"
+  fallout-font: "Share Tech Mono, IBM Plex Mono, Courier New, monospace"
+  fallout-scanline-opacity: "0.25"
+  fallout-flicker-opacity: "0.04"
   card-mod-theme: fallout_retro_amber
-  card-mod-icon-color: "#ffb642"
 
 fallout_retro_blue:
   primary-background-color: "#000812"
   secondary-background-color: "#00111c"
-  card-background-color: "rgba(0, 8, 18, 0.92)"
-  ha-card-background: "rgba(0, 8, 18, 0.92)"
+  card-background-color: "#000812"
+  ha-card-background: "#000812"
   primary-text-color: "#66ccff"
   secondary-text-color: "#3399cc"
+  disabled-text-color: "#1f5a7a"
   primary-color: "#42b6ff"
   accent-color: "#8ae0ff"
   warning-color: "#ffcc66"
@@ -86,12 +94,19 @@ fallout_retro_blue:
   paper-item-icon-active-color: "#42b6ff"
   ha-card-border-radius: "6px"
   ha-card-box-shadow: "0 0 0 1px rgba(66,182,255,0.14), 0 8px 24px rgba(0,0,0,0.45)"
-  font-family-body: "IBM Plex Mono, Menlo, Courier New, monospace"
-  font-family-headline: "IBM Plex Mono, Menlo, Courier New, monospace"
-  crt-flicker-opacity: "0.02"
-  crt-scanline-spacing: "4px"
-  crt-curvature-radius: "10%"
-  phosphor-glow-primary: "0 0 10px rgba(66, 182, 255, 0.4)"
-  phosphor-glow-alert: "0 0 15px rgba(255, 107, 94, 0.6)"
+  primary-font-family: "Share Tech Mono, IBM Plex Mono, Courier New, monospace"
+  paper-font-common-base_-_font-family: "Share Tech Mono, IBM Plex Mono, Courier New, monospace"
+  fallout-accent: "#42b6ff"
+  fallout-accent-dim: "#2a6f9c"
+  fallout-accent-soft: "rgba(66, 182, 255, 0.18)"
+  fallout-text: "#66ccff"
+  fallout-bg: "#000812"
+  fallout-bg-elev: "#00111c"
+  fallout-warn: "#ffcc66"
+  fallout-alert: "#ff6b5e"
+  fallout-glow: "rgba(66, 182, 255, 0.55)"
+  fallout-radius: "6px"
+  fallout-font: "Share Tech Mono, IBM Plex Mono, Courier New, monospace"
+  fallout-scanline-opacity: "0.25"
+  fallout-flicker-opacity: "0.04"
   card-mod-theme: fallout_retro_blue
-  card-mod-icon-color: "#42b6ff"

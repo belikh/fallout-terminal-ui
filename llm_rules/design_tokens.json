@@ -1,36 +1,25 @@
 {
-  "system_identifier": "ROBCO_OS_DESIGN_SYSTEM",
-  "version": "2287.4",
-  "color_palette": {
-    "monochrome_phosphor": {
-      "hex": "#9cff57",
-      "rgb": [156, 255, 87],
-      "use_case": "Primary focus elements, glowing borders, active state parameters"
-    },
-    "muted_amber": {
-      "hex": "#e6c15a",
-      "rgb": [230, 193, 90],
-      "use_case": "Secondary warning thresholds, degraded operations, structural highlights"
-    },
-    "radiation_red": {
-      "hex": "#ff6b5e",
-      "rgb": [255, 107, 94],
-      "use_case": "Critical fault detection, structural breach, automation lockouts"
-    },
-    "terminal_void": {
-      "hex": "#0b0f0a",
-      "rgb": [11, 15, 10],
-      "use_case": "Canvas background, infinite container depth"
-    }
+  "system_identifier": "ROBCO_FALLOUT_DESIGN_SYSTEM",
+  "version": "4.0.0",
+  "notes": "Cards consume these as CSS custom properties named --fallout-<key>. Themes set them on the document; cards fall back to the green defaults below when no Fallout theme is active. Reference them in card configs as var(--fallout-accent) etc.",
+  "tokens": {
+    "accent": { "default": "#9cff57", "use": "primary phosphor: values, fills, glowing borders, active state" },
+    "accent-dim": { "default": "#5f9c3a", "use": "borders, dividers, secondary lines" },
+    "accent-soft": { "default": "rgba(156, 255, 87, 0.18)", "use": "meter backgrounds, subtle fills, hover" },
+    "text": { "default": "#b8ff9a", "use": "body text" },
+    "bg": { "default": "#0b0f0a", "use": "card background / terminal void" },
+    "bg-elev": { "default": "#11160f", "use": "slightly raised panels" },
+    "warn": { "default": "#e6c15a", "use": "warning thresholds, degraded states" },
+    "alert": { "default": "#ff6b5e", "use": "critical faults, unavailable, breach" },
+    "glow": { "default": "rgba(156, 255, 87, 0.55)", "use": "text-shadow / phosphor glow" },
+    "radius": { "default": "6px", "use": "card corner radius" },
+    "font": { "default": "\"Share Tech Mono\", \"IBM Plex Mono\", \"Courier New\", monospace", "use": "all text" },
+    "scanline-opacity": { "default": "0.25", "use": "CRT scanline darkness" },
+    "flicker-opacity": { "default": "0.04", "use": "phosphor flicker intensity" }
   },
-  "geometry": {
-    "border_radius": "6px",
-    "border_width": "1px",
-    "shadow_profile": "0 0 0 1px rgba(156,255,87,0.14), 0 8px 24px rgba(0,0,0,0.45)"
-  },
-  "typography": {
-    "font_stack": ["IBM Plex Mono", "Menlo", "Courier New", "monospace"],
-    "case_transform": "uppercase_preferred",
-    "line_height": 1.4
+  "theme_palettes": {
+    "fallout_retro_green": { "accent": "#9cff57", "warn": "#e6c15a", "alert": "#ff6b5e", "bg": "#0b0f0a" },
+    "fallout_retro_amber": { "accent": "#ffb642", "warn": "#ff8c1a", "alert": "#ff4136", "bg": "#120a00" },
+    "fallout_retro_blue": { "accent": "#42b6ff", "warn": "#ffcc66", "alert": "#ff6b5e", "bg": "#000812" }
   }
 }

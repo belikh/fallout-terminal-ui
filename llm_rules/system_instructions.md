@@ -1,35 +1,33 @@
-# SYSTEM PROTOCOL: LLM CODE GENERATION RULES FOR FALLOUT UI
+# SYSTEM PROTOCOL: Generating for the RobCo Fallout Design System
 
-When asked to generate Home Assistant themes, dashboard YAML, card-mod styles, or custom card components under this framework, you MUST strictly adhere to the following architectural dictates:
+When generating cards, themes, or dashboard YAML for this framework, follow these rules.
 
-## 1. Geometric & Structural Constraints
-* No modern fluid roundings. All `border-radius` parameters must be clamped between `0px` and `6px`, or use the "CRT Curve" (`10% / 2%`) for monitor housings.
-* Containers must utilize sharp borders with high-contrast inner dropshadows and radial gradients to simulate physical cathode-ray tube (CRT) housings.
-* Enforce hard dividing structures. Use `divider-color` attributes with transparent alphas (`rgba(156, 255, 87, 0.18)`) or dashed lines to break content sections.
+## 1. Honesty first
+- Bind to **real entities**. Never hardcode fake game data (fixed inventories, made-up S.P.E.C.I.A.L.
+  numbers, simulated readings) into a card. If there's no entity, show "no signal", not invented data.
+- Don't pad. One good domain-adaptive card beats nine near-identical ones. Don't claim animations or
+  cards that don't exist.
 
-## 2. Textual Rendering Protocol
-* Transform all static titles, system headers, and raw states to **UPPERCASE** automatically within your generation loops.
-* Typography must exclusive use mono-spaced font families. Do not allow `Roboto`, `Segoe UI`, or default system sans-serif injections.
-* Prepend execution carets (`>`, `>>`, `[OK]`, `[WARN]`) to structural data lists and entity labels to maintain terminal immersion.
-* Utilize `text-shadow` for phosphor glowing effects on critical status text.
+## 2. Theming via tokens
+- Colour everything through `--fallout-*` tokens, referenced with a fallback:
+  `var(--fallout-accent, #9cff57)`. In JS, use `RobCoFallout.v("accent")`.
+- **Never** write a self-referential `:host` token block (`--x: var(--x, …)`) — CSS treats it as a
+  cyclic dependency and collapses every colour to inherited black.
+- Severity colours: ok → accent, warn → `--fallout-warn`, alert → `--fallout-alert`.
 
-## 3. High-Fidelity SVG Protocol (Vault Boy)
-* **NEVER** use simple stick-figures. Use complex cubic-bezier paths (`C` commands) for hair swirls, facial curvature, and Vault-Tec suit contours.
-* Character features must include: Hair swirl, eyes with highlight, smile, and "111" chest marking.
-* Animations must use fluid CSS keyframes with `transform-origin` optimization for joint rotation.
-* Always wrap character SVGs in a `.monitor-housing` container with `.scanlines` and `.flicker` overlay layers.
+## 3. Card structure
+- Extend `FalloutBaseCard`; implement `_render()`. The base provides the CRT shell, so don't re-draw
+  scanlines/borders. Use `this.header(...)` and the entity helpers.
+- Escape all interpolated config/state with `escapeHtml()`.
+- Provide `getStubConfig()` + a per-card editor via `defineFalloutEditor()`.
+- Register with `defineFalloutCard()`.
 
-## 3. UI Inventory Structural Matrix
-Map user layout requirements using the following structural component mapping matrix:
+## 4. Visual style
+- Monospace font (the token already sets it), uppercase headers, execution carets (`>`, `>>`,
+  `[OK]/[WARN]/[ALERT]`).
+- `text-shadow: 0 0 4px var(--fallout-glow)` for phosphor glow. `border-radius` ≤ 6px.
+- No material blur, no decorative neon gradients, no full-colour icon groupings. Keep it CRT.
 
-| Requested Component Type | Core Lovelace Mapping | Custom Layout Style Mandate |
-| :--- | :--- | :--- |
-| **Terminal Header** | `type: custom:mushroom-chips-card` | Strict horizontal chip alignment, no background pill shapes, glowing text shadows. |
-| **Stat Panel** | `type: grid` / `columns: 4` | Compact numeric visualization with raw unit suffix transformations. |
-| **List Panel** | `type: entities` | Remove individual icon backgrounds. Set line-height to explicit terminal bounds. |
-| **Alert Panel** | `type: custom:card-mod` wrap | Set background state to `rgba(255, 107, 94, 0.08)`, override standard borders with radiation red. |
-
-## 4. Anti-Patterns to Intercept and Correct
-* **NEVER** inject smooth gradient color shifts, material blurs (`backdrop-filter: blur`), or decorative neon gradients.
-* **NEVER** allow full-color icon groupings (e.g., standard blue for water, yellow for lights). Filter every icon color down through `var(--paper-item-icon-color)` or explicit monochrome variables matching the active theme color path.
-* **NEVER** utilize complex smooth animation curves (`cubic-bezier`). If state changes require motion, use instant state step transitions or low-frequency square-wave flashing animations (`step-start`, `step-end`).
+## 5. Verify
+- Render via `test/test-harness.html` against a mock `hass` before claiming a card works. A card that
+  hasn't been watched rendering isn't done.

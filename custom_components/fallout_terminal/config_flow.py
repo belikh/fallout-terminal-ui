@@ -1,33 +1,30 @@
-"""Config flow for Fallout Terminal."""
+"""Config flow for Fallout Terminal UI.
+
+There is nothing to configure — the integration only serves frontend assets — so this is a single
+confirmation step, limited to one instance.
+"""
 from __future__ import annotations
 
 from typing import Any
-import voluptuous as vol
 
 from homeassistant import config_entries
 from homeassistant.data_entry_flow import FlowResult
 
-from .const import DOMAIN, DEFAULT_NAME
+from .const import DEFAULT_NAME, DOMAIN
+
 
 class FalloutTerminalConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
-    """Handle a config flow for Fallout Terminal."""
+    """Handle a config flow for Fallout Terminal UI."""
 
     VERSION = 1
 
     async def async_step_user(
         self, user_input: dict[str, Any] | None = None
     ) -> FlowResult:
-        """Handle the initial step."""
+        """Handle the initial step.
+
+        Nothing to ask, so the entry is created as soon as the integration is added.
+        """
         if self._async_current_entries():
             return self.async_abort(reason="single_instance_allowed")
-
-        if user_input is not None:
-            return self.async_create_entry(title=DEFAULT_NAME, data=user_input)
-
-        return self.async_show_form(
-            step_id="user",
-            data_schema=vol.Schema({
-                vol.Required("mainframe_address", default="127.0.0.1"): str,
-                vol.Optional("secure_terminal_link", default=True): bool,
-            })
-        )
+        return self.async_create_entry(title=DEFAULT_NAME, data={})

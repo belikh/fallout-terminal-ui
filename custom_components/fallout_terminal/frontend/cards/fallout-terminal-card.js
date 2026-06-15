@@ -1,86 +1,67 @@
-class FalloutTerminalCard extends HTMLElement {
-  set hass(hass) {
-    this._hass = hass;
-    if (!this.content) {
-      this.innerHTML = `
-        <style>
-          ha-card.fallout-terminal {
-            background: rgba(9, 16, 10, 0.94);
-            color: #b8ff9a;
-            border: 1px solid rgba(156, 255, 87, 0.25);
-            box-shadow: 0 0 15px rgba(156, 255, 87, 0.1), inset 0 0 10px rgba(0,0,0,0.8);
-            border-radius: 6px;
-            font-family: 'IBM Plex Mono', 'Courier New', monospace;
-            padding: 16px;
-            position: relative;
-            overflow: hidden;
-          }
-          ha-card.fallout-terminal::before {
-            content: " ";
-            display: block;
-            position: absolute;
-            top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            z-index: 2;
-            background-size: 100% 3px, 3px 100%;
-            pointer-events: none;
-          }
-          .terminal-header {
-            border-bottom: 1px solid rgba(156, 255, 87, 0.4);
-            padding-bottom: 4px;
-            margin-bottom: 12px;
-            text-transform: uppercase;
-            font-weight: bold;
-            font-size: 1.1em;
-            letter-spacing: 1px;
-          }
-          .terminal-content {
-            line-height: 1.4;
-          }
-        </style>
-        <ha-card class="fallout-terminal">
-          <div class="terminal-header" id="title">ROBCO INDUSTRIES UNIFIED TERMINAL</div>
-          <div class="terminal-content" id="content"></div>
-        </ha-card>
-      `;
-      this.content = this.querySelector('#content');
-      this.titleElement = this.querySelector('#title');
+/*
+  fallout-terminal-card — RobCo terminal readout for a single entity.
+
+  A diagnostic "log" view: shows the entity's current state and, optionally, its attributes, in
+  terminal style. Entity-bound (the original version was too, and is kept on the new base).
+
+  config:
+    type:   custom:fallout-terminal-card
+    entity: switch.xxx          (required)
+    title:  "DEVICE LOG"        (optional; defaults to "DEVICE: <name>")
+    show_attributes: true       (optional; list the entity's attributes)
+*/
+(function () {
+  const { FalloutBaseCard, defineFalloutCard, defineFalloutEditor, escapeHtml } = window.RobCoFallout;
+
+  class FalloutTerminalCard extends FalloutBaseCard {
+    _validate(config) {
+      if (!config.entity) throw new Error("fallout-terminal-card: 'entity' is required");
     }
+    static getStubConfig() { return { type: "custom:fallout-terminal-card", entity: "" }; }
+    static getConfigElement() { return document.createElement("fallout-terminal-card-editor"); }
 
-    const entityId = this.config.entity;
-    const state = hass.states[entityId];
-    const stateStr = state ? state.state : 'UNKNOWN';
-    const friendlyName = state && state.attributes.friendly_name ? state.attributes.friendly_name : entityId;
+    _render() {
+      const cfg = this._config;
+      const s = this.stateObj(cfg.entity);
+      const name = this.friendlyName(cfg.entity);
+      const title = cfg.title || `DEVICE: ${name}`;
+      const stateStr = s ? s.state : "UNKNOWN";
+      const stateCls = !s || stateStr === "unavailable" || stateStr === "unknown" ? "alert" : "ok";
 
-    this.titleElement.innerText = this.config.title || `DEVICE: ${friendlyName.toUpperCase()}`;
-    this.content.innerHTML = `
-      <div>> INITIALIZING MONITORING MATRIX...</div>
-      <div>> CURRENT STATUS: <span style="color: #9cff57; font-weight: bold;">${stateStr.toUpperCase()}</span></div>
-      ${this.config.show_attributes && state ? Object.keys(state.attributes).map(attr => `
-        <div>>> ${attr.toUpperCase()}: ${state.attributes[attr]}</div>
-      `).join('') : ''}
-    `;
-  }
+      let attrs = "";
+      if (cfg.show_attributes && s) {
+        attrs = Object.keys(s.attributes)
+          .map((k) => `<div>&gt;&gt; ${escapeHtml(k.toUpperCase())}: ${escapeHtml(formatAttr(s.attributes[k]))}</div>`)
+          .join("");
+      }
 
-  setConfig(config) {
-    if (!config.entity) {
-      throw new Error('You must specify an operational entity');
+      this.body.innerHTML =
+        this.header(title, "termlink") +
+        `<div style="line-height:1.5;cursor:pointer;" class="log">
+           <div class="dim">&gt; INITIALIZING MONITORING MATRIX...</div>
+           <div>&gt; CURRENT STATUS: [ <span class="${stateCls}">${escapeHtml(stateStr.toUpperCase())}</span> ]</div>
+           ${attrs}
+           <div class="blink">_</div>
+         </div>`;
+
+      this.body.querySelector(".log").addEventListener("click", () => this.moreInfo(cfg.entity));
     }
-    this.config = config;
   }
-  static getConfigElement() { return document.createElement('fallout-card-editor'); }
-  static getStubConfig() { return { type: 'custom:fallout-terminal-card', entity: '' }; }
 
-  getCardSize() {
-    return 3;
+  function formatAttr(value) {
+    if (Array.isArray(value)) return value.join(", ");
+    if (value && typeof value === "object") return JSON.stringify(value);
+    return String(value);
   }
-}
 
-customElements.define('fallout-terminal-card', FalloutTerminalCard);
-window.customCards = window.customCards || [];
-window.customCards.push({
-  type: "fallout-terminal-card",
-  name: "RobCo Terminal Monitor Card",
-  preview: true,
-  description: "A RobCo inspired diagnostic terminal card for tracking entity lifecycles."
-});
+  defineFalloutEditor("fallout-terminal-card-editor", [
+    { name: "entity", type: "entity", label: "Entity" },
+    { name: "title", type: "text", label: "Title (optional)" },
+    { name: "show_attributes", type: "boolean", label: "Show attributes" },
+  ]);
+
+  defineFalloutCard("fallout-terminal-card", FalloutTerminalCard, {
+    name: "RobCo Terminal",
+    description: "Terminal-style diagnostic readout for one entity.",
+  });
+})();
