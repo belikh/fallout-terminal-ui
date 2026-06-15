@@ -76,7 +76,9 @@ segments:                    # Optional thresholds (first match wins)
 
 ### 2. RobCo Control (`fallout-control-card`)
 The "One Card to Rule Them All." It adapts its interface based on the entity domain:
-- **Toggle:** `switch`, `light`, `fan`, `input_boolean`, `automation`, `siren`.
+- **Toggle:** `switch`, `fan`, `input_boolean`, `automation`, `siren`.
+- **Light:** `light` — ON/OFF toggle plus a brightness slider when the bulb is dimmable. For colour
+  temperature and colour presets, use the dedicated **RobCo Light** card below.
 - **Seal/Unseal:** `lock`.
 - **Execute:** `button`, `input_button`, `scene`, `script`.
 - **Valve/Slider:** `number`, `input_number`.
@@ -88,7 +90,27 @@ entity: lock.front_door
 name: BLAST DOOR
 ```
 
-### 3. Vault Boy Mascot (`fallout-vaultboy-card`)
+### 3. RobCo Light (`fallout-light-card`)
+A first-class lighting panel — the bread-and-butter control done properly. It reads the light's
+`supported_color_modes` and shows **only** the controls the bulb actually supports, so a dumb on/off
+plug degrades to a bare toggle while an RGBWW bulb gets the full suite.
+
+- **Power:** ON/OFF toggle (always).
+- **Brightness:** percentage readout + CRT meter + slider (any dimmable bulb).
+- **Colour temp:** WARM ↔ COOL kelvin slider (when `color_temp` is supported).
+- **Colour:** preset swatches → `rgb_color` (when an RGB/HS/XY mode is supported).
+
+```yaml
+type: custom:fallout-light-card
+entity: light.bedroom
+name: QUARTERS LIGHTS
+presets:                       # Optional — overrides the default mood palette
+  - { name: AMBER, rgb: [255, 176, 0] }
+  - { name: GREEN, rgb: [60, 255, 120] }
+  - { name: BLUE,  rgb: [90, 170, 255] }
+```
+
+### 4. Vault Boy Mascot (`fallout-vaultboy-card`)
 Drives the animated mascot from entity states or numeric ranges.
 
 ```yaml
@@ -102,7 +124,7 @@ mappings:                    # Threshold rules (first match wins)
   - { below: 1,    animation: sleeping, level: ok }
 ```
 
-### 4. S.T.A.T.S. Panel (`fallout-stats-card`)
+### 5. S.T.A.T.S. Panel (`fallout-stats-card`)
 A comprehensive vitals readout for grouped sensors (e.g., body composition).
 *Backwards-compatible alias: `pipboy-stats-card`.*
 
@@ -121,7 +143,7 @@ weight_scale_min: 40         # Optional (Default: 40)
 weight_scale_max: 110        # Optional (Default: 110)
 ```
 
-### 5. Terminal Status (`fallout-status-card`)
+### 6. Terminal Status (`fallout-status-card`)
 A clean diagnostic status line. Automatically maps `binary_sensor` problem classes.
 
 ```yaml
@@ -133,7 +155,7 @@ states:
   "off": { label: SECURE, level: ok }
 ```
 
-### 6. RobCo Terminal (`fallout-terminal-card`)
+### 7. RobCo Terminal (`fallout-terminal-card`)
 Detailed entity log, showing state and raw attributes in a terminal scroll.
 
 ```yaml

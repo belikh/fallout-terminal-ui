@@ -3,11 +3,14 @@
 
   Replaces the old suite's nine near-identical "INITIALIZE X" buttons. The rendered control matches
   what the entity actually is and calls the correct service:
-    - toggleable (switch/light/fan/input_boolean/automation/humidifier/siren): ON/OFF toggle
-    - lock:                                                                      SEAL / UNSEAL
-    - momentary (button/input_button/scene/script):                             EXECUTE press
-    - numeric (input_number/number):                                            slider -> set_value
-    - cover:                                                                     OPEN / STOP / CLOSE
+    - toggleable (switch/fan/input_boolean/automation/humidifier/siren):         ON/OFF toggle
+    - light:                                                                      ON/OFF + brightness slider
+    - lock:                                                                       SEAL / UNSEAL
+    - momentary (button/input_button/scene/script):                              EXECUTE press
+    - numeric (input_number/number):                                             slider -> set_value
+    - cover:                                                                      OPEN / STOP / CLOSE
+
+  For full lighting control (colour temperature + colour presets) use fallout-light-card instead.
 
   config:
     type:    custom:fallout-control-card
@@ -19,7 +22,7 @@
     if (!window.RobCoFallout) return;
     const { FalloutBaseCard, defineFalloutCard, defineFalloutEditor, escapeHtml, v } = window.RobCoFallout;
 
-    const TOGGLEABLE = ["switch", "light", "fan", "input_boolean", "automation", "humidifier", "siren"];
+    const TOGGLEABLE = ["switch", "fan", "input_boolean", "automation", "humidifier", "siren"];
     const MOMENTARY = { button: "press", input_button: "press", scene: "turn_on", script: "turn_on" };
 
     class FalloutControlCard extends FalloutBaseCard {
@@ -46,7 +49,30 @@
         const domain = this._domain();
         let controlHtml, attach;
 
-        if (TOGGLEABLE.includes(domain)) {
+        if (domain === "light") {
+          // Lights get a brightness slider beneath the toggle when they support dimming. (Colour
+          // temperature + colour presets live in the dedicated fallout-light-card.)
+          const on = s.state === "on";
+          const modes = s.attributes.supported_color_modes || [];
+          const dimmable = modes.some((m) =>
+            ["brightness", "color_temp", "hs", "rgb", "rgbw", "rgbww", "xy", "white"].includes(m));
+          const briPct = s.attributes.brightness != null
+            ? Math.round((s.attributes.brightness / 255) * 100) : (on ? 100 : 0);
+          controlHtml = this._toggle(on) + (dimmable ? `
+            <div style="margin-top:12px;">
+              <div class="dim" style="font-size:0.72em;letter-spacing:2px;display:flex;justify-content:space-between;">
+                <span>BRIGHTNESS</span><span>${on ? briPct : 0}%</span></div>
+              <input type="range" class="fallout-range" min="1" max="100" step="1" value="${briPct < 1 ? 1 : briPct}"
+                     style="width:100%;accent-color:${v("accent")};cursor:pointer;margin-top:6px;">
+            </div>` : "");
+          attach = () => {
+            this.body.querySelector(".fallout-btn")
+              .addEventListener("click", () => this.callService("light", "toggle", { entity_id: cfg.entity }));
+            const r = this.body.querySelector("input[type=range]");
+            if (r) r.addEventListener("change", (e) =>
+              this.callService("light", "turn_on", { entity_id: cfg.entity, brightness_pct: Number(e.target.value) }));
+          };
+        } else if (TOGGLEABLE.includes(domain)) {
           const on = s.state === "on";
           controlHtml = this._toggle(on);
           attach = () => this.body.querySelector(".fallout-btn")

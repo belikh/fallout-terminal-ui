@@ -41,6 +41,7 @@
   <script src="../custom_components/fallout_terminal/frontend/cards/fallout-gauge-card.js"></script>
   <script src="../custom_components/fallout_terminal/frontend/cards/fallout-status-card.js"></script>
   <script src="../custom_components/fallout_terminal/frontend/cards/fallout-control-card.js"></script>
+  <script src="../custom_components/fallout_terminal/frontend/cards/fallout-light-card.js"></script>
   <script src="../custom_components/fallout_terminal/frontend/cards/fallout-vaultboy-card.js"></script>
   <script src="../custom_components/fallout_terminal/frontend/cards/fallout-stats-card.js"></script>
   <script src="../custom_components/fallout_terminal/frontend/cards/fallout-terminal-card.js"></script>
@@ -58,6 +59,13 @@
       "binary_sensor.door":      { state: "off",  attributes: { friendly_name: "Vault Door" } },
       "switch.turret":           { state: "on",   attributes: { friendly_name: "Perimeter Turret" } },
       "light.lab":               { state: "off",  attributes: { friendly_name: "Lab Lighting" } },
+      "light.quarters":          { state: "on",   attributes: { friendly_name: "Quarters Lighting", brightness: 178,
+                                     supported_color_modes: ["color_temp", "rgb"], color_mode: "color_temp",
+                                     color_temp_kelvin: 3200, min_color_temp_kelvin: 2000, max_color_temp_kelvin: 6500,
+                                     rgb_color: [255, 176, 0] } },
+      "light.dimmer":            { state: "on",   attributes: { friendly_name: "Hall Dimmer", brightness: 90,
+                                     supported_color_modes: ["brightness"] } },
+      "light.plug":              { state: "off",  attributes: { friendly_name: "Lamp Plug", supported_color_modes: ["onoff"] } },
       "lock.blast_door":         { state: "locked", attributes: { friendly_name: "Blast Door" } },
       "input_number.valve":      { state: "60",   attributes: { friendly_name: "Coolant Valve", min: 0, max: 100, unit_of_measurement: "%" } },
       "sensor.body_weight":      { state: "82.5", attributes: { friendly_name: "Body Weight", unit_of_measurement: "kg" } },
@@ -82,7 +90,11 @@
       states: { on: { label: "BREACH DETECTED", level: "alert" }, off: { label: "SEALED", level: "ok" } } }],
     ["STATUS (door)", { type: "custom:fallout-status-card", entity: "binary_sensor.door", name: "VAULT DOOR" }],
     ["CONTROL (switch)", { type: "custom:fallout-control-card", entity: "switch.turret", name: "TURRET" }],
-    ["CONTROL (light)", { type: "custom:fallout-control-card", entity: "light.lab", name: "LAB LIGHTS" }],
+    ["CONTROL (light/dim)", { type: "custom:fallout-control-card", entity: "light.dimmer", name: "HALL DIMMER" }],
+    ["CONTROL (light/onoff)", { type: "custom:fallout-control-card", entity: "light.plug", name: "LAMP PLUG" }],
+    ["LIGHT (full)", { type: "custom:fallout-light-card", entity: "light.quarters", name: "QUARTERS LIGHTS" }],
+    ["LIGHT (dim only)", { type: "custom:fallout-light-card", entity: "light.dimmer", name: "HALL DIMMER" }],
+    ["LIGHT (off)", { type: "custom:fallout-light-card", entity: "light.lab", name: "LAB LIGHTS" }],
     ["CONTROL (lock)", { type: "custom:fallout-control-card", entity: "lock.blast_door", name: "BLAST DOOR" }],
     ["CONTROL (number)", { type: "custom:fallout-control-card", entity: "input_number.valve", name: "COOLANT VALVE" }],
     ["VAULT BOY (auto)", { type: "custom:fallout-vaultboy-card", entity: "sensor.radiation", name: "MONITOR",

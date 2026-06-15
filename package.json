@@ -1,6 +1,6 @@
 {
   "name": "fallout-terminal-ui",
-  "version": "4.2.0",
+  "version": "4.3.0",
   "description": "RobCo Industries — Fallout-themed design system (CRT cards + themes) for Home Assistant",
   "main": "custom_components/fallout_terminal/frontend/cards/fallout-core.js",
   "scripts": {

@@ -24,7 +24,8 @@ States (the only real ones — `window.RobCoFallout.VAULT_BOY_STATES`):
 ## Cards
 - `fallout-gauge-card` — numeric sensor → Pip-Boy meter with threshold colours.
 - `fallout-status-card` — entity state → `[OK]/[WARN]/[ALERT]` readout.
-- `fallout-control-card` — one card, domain-adaptive (toggle / lock / press / slider / cover).
+- `fallout-control-card` — one card, domain-adaptive (toggle / lock / press / slider / cover). Lights gain a brightness slider when dimmable.
+- `fallout-light-card` — dedicated lighting panel: power, brightness, colour temperature, colour presets — each shown only when the bulb's `supported_color_modes` reports it.
 - `fallout-vaultboy-card` — entity state → Vault Boy pose + level colour.
 - `fallout-stats-card` (alias `pipboy-stats-card`) — grouped sensors with healthy-range bars + mascot.
 - `fallout-terminal-card` — single entity + optional attributes, terminal style.

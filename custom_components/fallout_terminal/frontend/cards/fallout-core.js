@@ -22,7 +22,7 @@
 (function () {
   "use strict";
 
-  const FALLOUT_VERSION = "4.2.0";
+  const FALLOUT_VERSION = "4.3.0";
 
   // Self-host the monofonto display face (Typodermic), served by the integration under
   // /fallout_terminal_ui/assets/. Registered once at the document level so the face is available

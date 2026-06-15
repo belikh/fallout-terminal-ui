@@ -25,6 +25,7 @@ FRONTEND_SCRIPTS = (
     "cards/fallout-gauge-card.js",
     "cards/fallout-status-card.js",
     "cards/fallout-control-card.js",
+    "cards/fallout-light-card.js",
     "cards/fallout-vaultboy-card.js",
     "cards/fallout-stats-card.js",
     "cards/fallout-terminal-card.js",
