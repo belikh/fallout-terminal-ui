@@ -28,6 +28,8 @@ FRONTEND_SCRIPTS = (
     "cards/fallout-vaultboy-card.js",
     "cards/fallout-stats-card.js",
     "cards/fallout-terminal-card.js",
+    "cards/fallout-header-card.js",
+    "cards/fallout-nav-card.js",
 )
 
 URL_BASE = "/fallout_terminal_ui"

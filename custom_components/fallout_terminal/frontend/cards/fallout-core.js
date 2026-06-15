@@ -22,7 +22,7 @@
 (function () {
   "use strict";
 
-  const FALLOUT_VERSION = "4.1.0";
+  const FALLOUT_VERSION = "4.2.0";
 
   // Self-host the monofonto display face (Typodermic), served by the integration under
   // /fallout_terminal_ui/assets/. Registered once at the document level so the face is available
@@ -70,13 +70,13 @@
       position: relative;
       background: ${v("bg")};
       color: ${v("text")};
-      border: 1px solid ${v("accent-dim")};
-      border-radius: ${v("radius")};
-      padding: 16px 18px;
+      border: 1px solid ${v("accent")};
+      border-radius: 3px;
+      padding: 0 16px 14px;
       font-family: ${v("font")};
       text-shadow: 0 0 4px ${v("glow")};
-      box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.85), 0 0 16px rgba(0, 0, 0, 0.5);
-      overflow: hidden;
+      box-shadow: inset 0 0 36px rgba(0, 0, 0, 0.82), 0 0 12px rgba(0, 0, 0, 0.5);
+      overflow: visible;
     }
 
     /* Scanlines + subtle RGB shadow-mask, the way a CRT actually looks. */
@@ -87,14 +87,14 @@
         linear-gradient(rgba(0,0,0,0) 50%, rgba(0,0,0,${v("scanline-opacity")}) 51%),
         linear-gradient(90deg, rgba(255,0,0,0.04), rgba(0,255,0,0.015), rgba(0,0,255,0.04));
       background-size: 100% 3px, 3px 100%;
-      z-index: 4; pointer-events: none;
+      z-index: 4; pointer-events: none; border-radius: inherit;
     }
     /* Phosphor flicker + edge vignette (the glass curvature falloff). */
     .fallout-card::after {
       content: "";
       position: absolute; inset: 0;
       background: radial-gradient(120% 120% at 50% 50%, transparent 60%, rgba(0,0,0,0.5) 100%);
-      z-index: 5; pointer-events: none;
+      z-index: 5; pointer-events: none; border-radius: inherit;
       animation: fallout-flicker 0.12s steps(2, end) infinite;
     }
     @keyframes fallout-flicker {
@@ -106,13 +106,14 @@
     .fallout-body { position: relative; z-index: 6; }
 
     .fallout-header {
-      display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
-      border-bottom: 1px solid ${v("accent-dim")};
-      padding-bottom: 6px; margin-bottom: 12px;
+      display: flex; justify-content: space-between; align-items: center; gap: 12px;
+      margin: -0.7em -6px 12px;
       text-transform: uppercase; letter-spacing: 2px;
       font-weight: bold; font-size: 1.05em;
       color: ${v("accent")};
     }
+    /* Title + sub ride on the top border (legend notch): their bg masks the frame line behind them. */
+    .fallout-header > span { background: ${v("bg")}; padding: 0 8px; }
     .fallout-header .sub { font-size: 0.6em; letter-spacing: 1px; opacity: 0.7; }
 
     .ok    { color: ${v("accent")}; }
