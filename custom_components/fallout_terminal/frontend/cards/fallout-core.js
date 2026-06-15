@@ -22,7 +22,21 @@
 (function () {
   "use strict";
 
-  const FALLOUT_VERSION = "4.0.1";
+  const FALLOUT_VERSION = "4.1.0";
+
+  // Self-host the monofonto display face (Typodermic), served by the integration under
+  // /fallout_terminal_ui/assets/. Registered once at the document level so the face is available
+  // inside every card's shadow root (shadow roots inherit document-registered @font-face).
+  (function injectFontFace() {
+    if (typeof document === "undefined" || document.getElementById("robco-fallout-fontface")) return;
+    const style = document.createElement("style");
+    style.id = "robco-fallout-fontface";
+    style.textContent =
+      '@font-face{font-family:"monofonto";' +
+      'src:url("/fallout_terminal_ui/assets/monofonto.otf") format("opentype");' +
+      "font-weight:normal;font-style:normal;font-display:swap;}";
+    (document.head || document.documentElement).appendChild(style);
+  })();
 
   // Token defaults. A theme (fallout_retro.yaml) re-skins everything by setting these --fallout-*
   // vars on the document; they inherit through shadow roots. Consumers reference them WITH the
@@ -39,7 +53,7 @@
     alert: "#ff6b5e",
     glow: "rgba(156, 255, 87, 0.55)",
     radius: "6px",
-    font: `"Share Tech Mono", "IBM Plex Mono", "Courier New", monospace`,
+    font: `"monofonto", "Share Tech Mono", "IBM Plex Mono", "Courier New", monospace`,
     "scanline-opacity": "0.25",
     "flicker-opacity": "0.04",
   };
@@ -285,11 +299,17 @@
         this._render();
       }
       _render() {
-        if (!this._hass || !this._config || this._built) return;
-        this.innerHTML = `<div style="display:flex;flex-direction:column;gap:14px;"></div>`;
-        this._root = this.firstElementChild;
-        this._built = true;
-        for (const field of schema) this._addField(field);
+        if (!this._hass || !this._config) return;
+        if (!this._built) {
+          this.innerHTML = `<div style="display:flex;flex-direction:column;gap:14px;"></div>`;
+          this._root = this.firstElementChild;
+          this._built = true;
+          for (const field of schema) this._addField(field);
+        } else {
+          for (const el of this._root.children) {
+            if ("hass" in el) el.hass = this._hass;
+          }
+        }
       }
       _addField(field) {
         let el;
@@ -336,7 +356,7 @@
     customElements.define(tag, FalloutEditor);
   }
 
-  window.RobCoFallout = {
+  window.RobCoFallout = Object.assign(window.RobCoFallout || {}, {
     VERSION: FALLOUT_VERSION,
     FALLOUT_STYLE,
     DEFAULTS,
@@ -345,7 +365,7 @@
     defineFalloutCard,
     defineFalloutEditor,
     escapeHtml,
-  };
+  });
 
   console.info(
     `%c ROBCO FALLOUT UI %c v${FALLOUT_VERSION} `,
