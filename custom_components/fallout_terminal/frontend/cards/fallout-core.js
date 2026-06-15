@@ -22,7 +22,7 @@
 (function () {
   "use strict";
 
-  const FALLOUT_VERSION = "4.0.0";
+  const FALLOUT_VERSION = "4.0.1";
 
   // Token defaults. A theme (fallout_retro.yaml) re-skins everything by setting these --fallout-*
   // vars on the document; they inherit through shadow roots. Consumers reference them WITH the
