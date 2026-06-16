@@ -22,7 +22,7 @@
 (function () {
   "use strict";
 
-  const FALLOUT_VERSION = "4.3.0";
+  const FALLOUT_VERSION = "4.3.1";
 
   // Self-host the monofonto display face (Typodermic), served by the integration under
   // /fallout_terminal_ui/assets/. Registered once at the document level so the face is available
@@ -238,7 +238,13 @@
 
     friendlyName(entityId) {
       const s = this.stateObj(entityId);
-      return (s && s.attributes.friendly_name) || entityId || "";
+      if (s && s.attributes.friendly_name) return s.attributes.friendly_name;
+      if (!entityId) return "";
+      // No friendly_name: humanise the entity_id instead of dumping raw snake_case
+      // (e.g. "sensor.alpstuga_air_quality_monitor_temperature" -> "Alpstuga Air Quality Monitor Temperature").
+      const slug = entityId.split(".").slice(1).join(".");
+      if (!slug) return entityId;
+      return slug.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
     }
 
     unit(entityId) {

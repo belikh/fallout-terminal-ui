@@ -52,6 +52,7 @@
   const hass = {
     states: {
       "sensor.reactor_output":   { state: "73.4", attributes: { friendly_name: "Reactor Output", unit_of_measurement: "%" } },
+      "sensor.alpstuga_air_quality_monitor_temperature": { state: "23.7", attributes: { unit_of_measurement: "°C" } },
       "sensor.radiation":        { state: "4.2",  attributes: { friendly_name: "Radiation Level", unit_of_measurement: "rad/h" } },
       "sensor.water_purity":     { state: "12",   attributes: { friendly_name: "Water Purity", unit_of_measurement: "%" } },
       "sensor.core_temp":        { state: "612",  attributes: { friendly_name: "Core Temperature", unit_of_measurement: "°C" } },
@@ -83,6 +84,8 @@
   const cards = [
     ["GAUGE", { type: "custom:fallout-gauge-card", entity: "sensor.reactor_output", name: "REACTOR OUTPUT",
       segments: [{ to: 60, color: "var(--fallout-accent)" }, { to: 85, color: "var(--fallout-warn)" }, { to: 100, color: "var(--fallout-alert)" }] }],
+    // No name + no friendly_name: header must NOT show the raw entity_id; title humanises the slug.
+    ["GAUGE (no name/fn)", { type: "custom:fallout-gauge-card", entity: "sensor.alpstuga_air_quality_monitor_temperature", min: 0, max: 40 }],
     ["GAUGE (rad)", { type: "custom:fallout-gauge-card", entity: "sensor.radiation", name: "GEIGER", min: 0, max: 10,
       segments: [{ to: 3, color: "var(--fallout-accent)" }, { to: 6, color: "var(--fallout-warn)" }, { to: 10, color: "var(--fallout-alert)" }] }],
     ["GAUGE (offline)", { type: "custom:fallout-gauge-card", entity: "sensor.unavailable_one", name: "GHOST" }],

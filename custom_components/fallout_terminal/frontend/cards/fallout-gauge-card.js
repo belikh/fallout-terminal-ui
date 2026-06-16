@@ -83,7 +83,7 @@
         const display = value == null ? "--" : value.toFixed(decimals);
 
         this.body.innerHTML =
-          this.header(title, escapeHtml(cfg.entity)) +
+          this.header(title) +
           `<div style="display:flex;align-items:baseline;justify-content:center;gap:6px;margin:4px 0 12px;">
              <span style="font-size:2.6em;font-weight:bold;line-height:1;color:${color};text-shadow:0 0 10px ${color};">${escapeHtml(display)}</span>
              <span style="font-size:0.9em;opacity:0.7;">${escapeHtml(unit)}</span>
